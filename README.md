@@ -34,7 +34,14 @@ The frontend loads Shopify App Bridge and Polaris web components from Shopify's 
 
 Shopify app TOML is generated at deploy time from real app IDs. Set `SHOPIFY_APP_ENV` to `dev`, `qa`, or `prod`, set `SHOPIFY_CLIENT_ID` to the matching retail Shopify app client ID, then run `bun run shopify:config`. The generated `shopify.app.generated.toml` is intentionally ignored.
 
-Extension deploys use `.github/workflows/deploy-extensions.yml`. Manual runs can target `dev`, `qa`, or `prod`; pushes to `main` deploy QA extensions; published `pos-extensions/vX.Y.Z` releases deploy prod extensions. CI reads Shopify deploy values from GitHub Actions secrets.
+Extension deploys use `.github/workflows/deploy-extensions.yml`. Manual runs can target `dev`, `qa`, or `prod`; pushes to `main` deploy QA extensions; published `pos-extensions/vX.Y.Z` releases deploy prod extensions. CI reads Shopify deploy values from GitHub Actions secrets:
+
+- `SHOPIFY_RETAIL_POS_DEV_CLIENT_ID`
+- `SHOPIFY_RETAIL_POS_QA_CLIENT_ID`
+- `SHOPIFY_RETAIL_POS_PROD_CLIENT_ID`
+- `SHOPIFY_RETAIL_POS_DEV_AUTOMATION_TOKEN`
+- `SHOPIFY_RETAIL_POS_QA_AUTOMATION_TOKEN`
+- `SHOPIFY_RETAIL_POS_PROD_AUTOMATION_TOKEN`
 
 ## One-Time Migration
 

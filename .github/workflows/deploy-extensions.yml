@@ -73,5 +73,5 @@ jobs:
 
       - name: Deploy extensions
         env:
-          SHOPIFY_CLI_PARTNERS_TOKEN: ${{ secrets.SHOPIFY_CLI_PARTNERS_TOKEN }}
+          SHOPIFY_APP_AUTOMATION_TOKEN: ${{ needs.resolve-environment.outputs.env_name == 'dev' && secrets.SHOPIFY_RETAIL_POS_DEV_AUTOMATION_TOKEN || needs.resolve-environment.outputs.env_name == 'qa' && secrets.SHOPIFY_RETAIL_POS_QA_AUTOMATION_TOKEN || secrets.SHOPIFY_RETAIL_POS_PROD_AUTOMATION_TOKEN }}
         run: bunx shopify app deploy --config shopify.app.generated.toml -f
