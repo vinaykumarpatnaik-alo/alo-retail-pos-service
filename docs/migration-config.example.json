@@ -1,0 +1,37 @@
+{
+  "sourceProfile": "alo-ecomm-dev",
+  "targetProfile": "alo-retail-dev",
+  "sourceRegion": "us-east-1",
+  "targetRegion": "us-east-1",
+  "tables": [],
+  "secrets": [
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/shopify/key/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/shopify/key/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/shopify/secret/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/shopify/secret/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/extension-deploy/cli-partners-token/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/extension-deploy/cli-partners-token/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/alo-api/key/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/key/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/alo-api/secret/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/secret/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/loyalty-pos/token/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/loyalty-pos/token/${env}"
+    },
+    {
+      "sourceSecretId": "/ecomm/alo-pos-apps/store-fulfillment/key/dev",
+      "targetSecretId": "/retail/alo-retail-pos-service/store-fulfillment/key/${env}"
+    }
+  ]
+}

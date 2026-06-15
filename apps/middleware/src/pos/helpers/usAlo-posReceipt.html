@@ -1,0 +1,1315 @@
+{% comment %} Subject line logic
+Your Store Receipt for ALO Order {{name}}
+{% endcomment %}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- OUTLOOK 2013 DPI FIX -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+    <title>Alo Yoga</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="x-apple-disable-message-reformatting">
+    <!-- Mobile on Windows Phones -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- GOOGLE FONT BACKUP -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet" type='text/css'>
+    <link rel="stylesheet" type="text/css" href="/assets/notifications/styles.css">
+    <!-- favicons // -->
+    <link rel="shortcut icon" href="https://cdn.shopify.com/s/files/1/2185/2813/t/2432/assets/favicon-32x32.png?v=111275412657129911751661226533">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.shopify.com/s/files/1/2185/2813/t/2546/assets/apple-icon-180x180.png?v=100339498002468463391665549359">
+    <!-- // favicons -->
+    <!--[if gte mso 9]><xml>
+      <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+      </xml><![endif]-->
+    <!-- / OUTLOOK DPI FIX -->
+    <style>
+     @media screen {
+        /* Arquitecta */ 
+        @font-face {
+            font-family:'arquitecta';
+            src: url("https://cdn.shopify.com/s/files/1/2185/2813/t/2432/assets/latinotype_-_arquitectablack-webfont.woff2?v=13657020597760236281661226533") format('woff2'),
+              url("https://cdn.shopify.com/s/files/1/2185/2813/t/2432/assets/latinotype_-_arquitectablack-webfont.woff?v=109944306522337207381661226534") format('woff');
+            font-weight:900;
+            font-style:normal;
+            font-display:swap;
+        }
+        /* Proxima Nova */
+        @font-face {
+            font-family:'Proxima Nova';
+            src: url('https://use.typekit.net/af/0758f3/000000000000000077359583/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3') format('woff2'),
+              url('https://use.typekit.net/af/0758f3/000000000000000077359583/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3') format('woff'),
+              url('https://use.typekit.net/af/0758f3/000000000000000077359583/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n5&v=3') format('opentype');
+            font-display:swap;
+            font-style:normal;
+            font-weight:500;
+        }
+        @font-face {
+            font-family: 'Proxima Nova';
+            src: url('https://use.typekit.net/af/56b0cd/00000000000000007735957d/30/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3') format('woff2'),
+            url('https://use.typekit.net/af/56b0cd/00000000000000007735957d/30/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3') format('woff'),
+            url('https://use.typekit.net/af/56b0cd/00000000000000007735957d/30/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3') format('opentype');
+            font-style: normal;
+            font-weight: 300;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Proxima Nova';
+            src: url('https://use.typekit.net/af/705e94/00000000000000003b9b3062/27/l?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n4&v=3') format('woff2'),
+            url('https://use.typekit.net/af/705e94/00000000000000003b9b3062/27/d?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n4&v=3') format('woff'),
+            url('https://use.typekit.net/af/705e94/00000000000000003b9b3062/27/a?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n4&v=3') format('opentype');
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+        }
+        @font-face {
+            font-family:'Proxima Nova';
+            src: url('https://use.typekit.net/af/949f99/00000000000000003b9b3068/27/l?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n7&v=3') format('woff2'),
+              url('https://use.typekit.net/af/949f99/00000000000000003b9b3068/27/d?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n7&v=3') format('woff'),
+              url('https://use.typekit.net/af/949f99/00000000000000003b9b3068/27/a?primer=51e46510a8bcdb92fa139186fdd3d43fc0ac4348ee92477ba51cd46504e98815&fvd=n7&v=3') format('opentype');
+            font-style:normal;
+            font-weight:700;
+            font-display:swap;
+        }
+    }
+        
+        @media only screen and (max-device-width: 420px),
+        only screen and (max-width: 420px) {
+          table[class="gmail-table"] {
+            display: none !important;
+          }
+          
+        }
+      </style>
+</head>
+<!-- END HEAD -->
+
+<body style="padding-top:0; padding-bottom:0; padding-right:0; padding-left:0;" bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+    <p style="display: none;">Good intentions. Great selections.</p>
+    <!-- OUTER CONTAINER (GMAIL APP - FORCE DESKTOP VIEW) -->
+    <!-- PRE-HEADER -->
+    <table class="gmail-table" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td bgcolor="#ffffff" align="center">
+                <table border="0" cellpadding="0" cellspacing="0" max-width="600" class="gmail-table" style="width: 600px">
+                    <tr>
+                        <td class="padding-sides">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <!-- // PRE-HEADER -->
+    <div style="display: none; max-height: 0px; overflow: hidden;">
+        &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+    </div>
+    <center>
+        <table style="max-width: 600px; padding-top:0; padding-bottom:0; padding-right:0; padding-left:0;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr align="center">
+                <td style="padding: 0;">
+                    <div data-type="slot" data-key="hero">
+                        <title>
+                        </title>
+                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="max-width: 600px;" width="100%">
+                            <tr align="center">
+                                <td colspan="6">
+                                    <a href="{{ shop.url }}">
+                                        <img alt="Alo Yoga" border="0" src="https://cdn.shopify.com/s/files/1/2185/2813/files/Alo-Yoga-Store.png?v=1753224944" style="display: block; max-width: 100%;height:256.032px;align-self:stretch;aspect-ratio:504.00/256.03;" width="600"></a>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td width="600" height="30" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>
+                            <tr align="center">
+                                <td colspan="6">
+                                    <a href="{{ shop.url }}">
+                                        <img alt="Alo Yoga" border="0" src="https://cdn.shopify.com/s/files/1/2185/2813/files/87d365f5-34fe-4c4f-9ed4-1775876fe3d4.jpg?v=1753225076" style="display: block; max-width: 100%;max-height:71px;" width="600"></a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table id="Table_01" style="max-width: 600px;" bgcolor="#FFFFFF" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr align="center">
+                                <td width="600" height="30" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>                        
+                            <tr align="center">
+                                <td colspan="6">
+                                    <div style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;text-align:center;letter-spacing:.9px;line-height:2;text-transform:uppercase;font-size:18px;color:#000000;font-weight:400;">Order {{ name }}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td width="600" height="24" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <p style="text-align:center;font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:500;font-size:40px;color:#000000;line-height:1.4;letter-spacing:-1.2px;text-transform:uppercase;">You've got great taste
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="600" height="24" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <div style="font-family:'Proxima Nova','Roboto','Helvetica Neue',sans-serif;text-align:center;letter-spacing:0.352px;line-height:24px;font-size:16px;color:#000000;font-weight:400;padding: 10px 0;">Mindful movement looks good on you. Thanks for shopping at ALO.
+                                    </div>
+                                </td>
+                            </tr> 
+                            <tr>
+                                <td width="600" height="24" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>            
+                        </table>
+                        <table align="center">
+                            <tr>
+                                <td>                
+                                    <p style="color: #605E5C;text-align: center;font-family: 'Proxima Nova', sans-serif;font-size: 16px;font-style: normal;font-weight: 400;line-height: 24px;letter-spacing: 0.16px;">Alo Yoga {{ location.name }}
+                                        <br>{{ location.address1 }} {{ location.address2 }}
+                                        <br>{{ location.city }}, {{ location.province }} {{ location.zip }}
+                                        <br>{{ location.phone }}</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="Table_01" style="max-width: 600px;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr align="center">
+                                <td width="600" height="30" bgcolor="#FFFFFF">&nbsp;</td>
+                            </tr>
+                        </table>
+
+                        <!-- ORDER SUMMARY -->
+                        <table class="row section" style="max-width: 600px;border-top: 1px solid #cccccc;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="section__cell" style="font-family:'Proxima Nova','Helvetica Neue',Arial,sans-serif; font-size:15px;">
+                                   <table class="container">
+                                       <tr>
+                                            <td>
+                                                <h3 style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;text-transform:uppercase;font-weight:500;font-size:24px;color:#000000; line-height: 32px;">Order summary</h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="container">
+                                        <tr>
+                                            <td>
+                                              
+
+                                               <table class="container">
+                    <tr>
+                      <td>
+                {% if line_items_including_zero_quantity == blank %}
+              
+  
+<table class="row">
+  {% for line in subtotal_line_items %}
+    {% if line.groups.size == 0 %}
+      
+<tr class="order-list__item" style="border:none">
+  <td class="order-list__item__cell">
+    <table>
+        {% assign expand_bundles = false %}
+
+      {% if expand_bundles and line.bundle_parent? %}
+        <td class="order-list__parent-image-cell">
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__product-image"/>
+          {% else %}
+            <div class="order-list__no-image-cell">
+              <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__no-product-image"/>
+            </div>
+          {% endif %}
+        </td>
+      {% else %}
+        <td class="order-list__image-cell">
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__product-image"/>
+          {% else %}
+            <div class="order-list__no-image-cell">
+              <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__no-product-image"/>
+            </div>
+          {% endif %}
+        </td>
+      {% endif %}
+      <td class="order-list__product-description-cell">
+        {% if line.product.title %}
+          {% assign line_title = line.product.title %}
+        {% else %}
+          {% assign line_title = line.title %}
+        {% endif %}
+
+        {% if line.quantity < line.quantity %}
+          {% capture line_display %}
+            {{ line.quantity }} of {{ line.quantity }}
+          {% endcapture %}
+        {% else %}
+          {% assign line_display = line.quantity %}
+        {% endif %}
+
+        <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ line_title }}&nbsp;&times;&nbsp;{{ line_display }}</span><br/>
+
+        {% if line.variant.title != 'Default Title' and line.bundle_parent? == false %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.variant.title }}</span><br/>
+        {% elsif line.variant.title != 'Default Title' and line.bundle_parent? and expand_bundles == false %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.variant.title }}</span><br/>
+          
+        {% endif %}
+ {% if line.product and line.product.tags contains 'Policy:FinalSale' %}
+  <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#B00020;line-height: 24px;letter-spacing: 0.352px;">Final Sale</span>
+{% endif %}
+        {% if expand_bundles %}
+          {% for component in line.bundle_components %}
+            <table>
+              <tr class="order-list__item" style="border:none">
+                <td class="order-list__bundle-item">
+                  <table>
+                    <td class="order-list__image-cell">
+                      {% if component.image %}
+                        <img src="{{ component | img_url: 'compact_cropped' }}" align="left" width="40" height="40" class="order-list__product-image small"/>
+                      {% elsif component.image_url %}
+                        <img src="{{ component.image_url }}" align="left" width="40" height="40" class="order-list__product-image small"/>
+                      {% else %}
+                        <div class="order-list__no-image-cell small">
+                          <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" align="left" width="40" height="40" class="order-list__no-product-image small"/>
+                        </div>
+                      {% endif %}
+                    </td>
+
+                    <td class="order-list__product-description-cell">
+                      {% if component.product.title %}
+                        {% assign component_title = component.product.title %}
+                      {% else %}
+                        {% assign component_title = component.title %}
+                      {% endif %}
+
+                      {% assign component_display = component.quantity %}
+
+                      <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ component_title }}&nbsp;&times;&nbsp;{{ component_display }}</span><br>
+
+                      {% if component.variant.title != 'Default Title'%}
+                        <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ component.variant.title }}</span>
+                      {% endif %}
+                    </td>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          {% endfor %}
+        {% else %}
+          {% for group in line.groups %}
+            <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">Part of: {{ group.display_title }}</span><br/>
+          {% endfor %}
+        {% endif %}
+
+
+        {% if line.selling_plan_allocation %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.selling_plan_allocation.selling_plan.name }}</span><br/>
+        {% endif %}
+
+        {% if line.refunded_quantity > 0 %}
+          <!-- <span class="order-list__item-refunded"><span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#B00020;line-height: 24px;letter-spacing: 0.352px;">Refunded</span></span> -->
+        {% endif %}
+
+        {% if line.discount_allocations %}
+          {% for discount_allocation in line.discount_allocations %}
+            {% if discount_allocation.discount_application.target_selection != 'all' %}
+            <p>
+              <span class="order-list__item-discount-allocation">
+                <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+                <span>
+                  {{ discount_allocation.discount_application.title | upcase }}
+                  (-{{ discount_allocation.amount | money }})
+                </span>
+              </span>
+            </p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </td>
+        {% if expand_bundles and line.bundle_parent? %}
+          <td class="order-list__parent-price-cell">
+        {% else %}
+          <td class="order-list__price-cell">
+        {% endif %}
+        {% if line.original_line_price != line.final_line_price %}
+          <del class="order-list__item-original-price">{{ line.original_line_price | money }}</del>
+        {% endif %}
+          <p class="order-list__item-price">
+            {% if line.final_line_price > 0 %}
+              <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;">{{ line.final_line_price | money }}</span>
+            {% else %}
+              <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#B00020;">Free</span>
+            {% endif %}
+          </p>
+        </td>
+    </table>
+  </td>
+</tr>
+
+    {% endif %}
+  {% endfor %}
+  {% for line_item_group in line_item_groups %}
+    
+{% assign final_line_price = 0 %}
+{% assign original_line_price = 0 %}
+{% assign discount_keys_str = "" %}
+
+{% for component in line_item_group.components %}
+  {% assign final_line_price = final_line_price | plus: component.final_line_price %}
+  {% assign original_line_price = original_line_price | plus: component.original_line_price %}
+
+  {% for da in component.discount_allocations %}
+    {% if da.discount_application.target_selection != 'all' %}
+      {% assign discount_key = da.discount_application.title | append: da.discount_application.type %}
+      {% assign discount_keys_str = discount_keys_str | append: discount_key | append: "," %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+
+{% assign discount_keys = discount_keys_str | split: "," | uniq %}
+
+<tr class="order-list__item" style="border-bottom:1px solid #ffffff;">
+  <td class="order-list__item__cell">
+    <table style="border:none;">
+        <td class="order-list__parent-image-cell">
+          {% if line_item_group.image %}
+            <img src="{{ line_item_group | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__product-image"/>
+          {% else %}
+            <div class="order-list__no-image-cell">
+              <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__no-product-image"/>
+            </div>
+          {% endif %}
+      </td>
+      <td class="order-list__product-description-cell">
+        <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ line_item_group.title }}&nbsp;&times;&nbsp;{{ line_item_group.quantity }}</span><br/>
+
+        {% for component in line_item_group.components %}
+          <table>
+            <tr class="order-list__item">
+              <td class="order-list__bundle-item">
+                <table>
+                  <td class="order-list__image-cell">
+                    {% if component.image %}
+                      <img src="{{ component | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="60" height="60" class="order-list__product-image"/>
+                    {% else %}
+                      <div class="order-list__no-image-cell small">
+                        <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="60" height="60" class="order-list__no-product-image small"/>
+                      </div>
+                    {% endif %}
+                  </td>
+
+                  <td class="order-list__product-description-cell">
+                    {% if component.product.title %}
+                      {% assign component_title = component.product.title %}
+                    {% else %}
+                      {% assign component_title = component.title %}
+                    {% endif %}
+
+                    <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ component_title }}&nbsp;&times;&nbsp;{{ component.quantity }}</span><br>
+
+                    {% if component.variant.title != 'Default Title'%}
+                      <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ component.variant.title }}</span>
+                    {% endif %}
+                  </td>
+                </table>
+              </td>
+            </tr>
+          </table>
+        {% endfor %}
+
+        {% for discount_key in discount_keys %}
+          {% assign discount_amount = 0 %}
+
+          {% for component in line_item_group.components %}
+            {% for da in component.discount_allocations %}
+              {% assign key = da.discount_application.title | append: da.discount_application.type %}
+              {% if da.discount_application.target_selection != 'all' and key == discount_key %}
+                {% assign discount_amount = discount_amount | plus: da.amount %}
+                {% assign discount_title = da.discount_application.title %}
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+
+          <p>
+            <span class="order-list__item-discount-allocation">
+              <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+              <span>
+                {{ discount_title | upcase }}
+                (-{{ discount_amount | money }})
+              </span>
+            </span>
+          </p>
+        {% endfor %}
+      </td>
+
+          <td class="order-list__parent-price-cell">
+        {% if original_line_price != final_line_price %}
+          <del class="order-list__item-original-price">{{ original_line_price | money }}</del>
+        {% endif %}
+          <p class="order-list__item-price">
+            {% if final_line_price > 0 %}
+             <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;"> {{ final_line_price | money }}</span>
+             
+            {% else %}
+              <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px; color:#B00020;letter-spacing: 0.352px;">Refunded</span>
+            {% endif %}
+          </p>
+        </td>
+    </table>
+  </td>
+</tr>
+  {% endfor %}
+</table>
+
+            {% else %}
+              
+  <table class="row">
+    {% for line in line_items_including_zero_quantity %}
+      
+<tr class="order-list__item" style="border:none">
+  <td class="order-list__item__cell">
+    <table>
+        {% assign expand_bundles = false %}
+
+      {% if expand_bundles and line.bundle_parent? %}
+        <td class="order-list__parent-image-cell">
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__product-image"/>
+          {% else %}
+            <div class="order-list__no-image-cell">
+              <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__no-product-image"/>
+            </div>
+          {% endif %}
+        </td>
+      {% else %}
+        <td class="order-list__image-cell">
+          {% if line.image %}
+            <img src="{{ line | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__product-image"/>
+          {% else %}
+            <div class="order-list__no-image-cell">
+              <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="80" class="order-list__no-product-image"/>
+            </div>
+          {% endif %}
+        </td>
+      {% endif %}
+      <td class="order-list__product-description-cell">
+        {% if line.product.title %}
+          {% assign line_title = line.product.title %}
+        {% else %}
+          {% assign line_title = line.title %}
+        {% endif %}
+
+        {% if line.quantity < line.quantity %}
+          {% capture line_display %}
+            {{ line.quantity }} of {{ line.quantity }}
+          {% endcapture %}
+        {% else %}
+          {% assign line_display = line.quantity %}
+        {% endif %}
+
+        <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ line_title }}&nbsp;&times;&nbsp;{{ line_display }}</span><br/>
+
+        {% if line.variant.title != 'Default Title' and line.bundle_parent? == false %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.variant.title }}</span><br/>
+        {% elsif line.variant.title != 'Default Title' and line.bundle_parent? and expand_bundles == false %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.variant.title }}</span><br/>
+        {% endif %}
+
+        {% if expand_bundles %}
+          {% for component in line.bundle_components %}
+            <table>
+              <tr class="order-list__item" style="border:none">
+                <td class="order-list__bundle-item">
+                  <table>
+                    <td class="order-list__image-cell">
+                      {% if component.image %}
+                        <img src="{{ component | img_url: 'compact_cropped' }}" style="border:none;border-radius:none;" align="left" width="90" height="90" class="order-list__product-image small"/>
+                      {% elsif component.image_url %}
+                        <img src="{{ component.image_url }}" style="border:none;border-radius:none;" align="left" width="90" height="90" class="order-list__product-image small"/>
+                      {% else %}
+                        <div class="order-list__no-image-cell small">
+                          <img src="{{ 'notifications/no-image.png' | shopify_asset_url }}" style="border:none;border-radius:none;" align="left" width="90" height="90" class="order-list__no-product-image small"/>
+                        </div>
+                      {% endif %}
+                    </td>
+
+                    <td class="order-list__product-description-cell">
+                      {% if component.product.title %}
+                        {% assign component_title = component.product.title %}
+                      {% else %}
+                        {% assign component_title = component.title %}
+                      {% endif %}
+
+                      {% assign component_display = component.quantity %}
+
+                      <span class="order-list__item-title" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#000000;letter-spacing: 0.352px;line-height: 24px;">{{ component_title }}&nbsp;&times;&nbsp;{{ component_display }}</span><br>
+
+                      {% if component.variant.title != 'Default Title'%}
+                        <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ component.variant.title }}</span>
+                      {% endif %}
+                    </td>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          {% endfor %}
+        {% else %}
+          {% for group in line.groups %}
+            <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">Part of: {{ group.display_title }}</span><br/>
+          {% endfor %}
+        {% endif %}
+
+
+        {% if line.selling_plan_allocation %}
+          <span class="order-list__item-variant" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ line.selling_plan_allocation.selling_plan.name }}</span><br/>
+        {% endif %}
+
+        {% if line.refunded_quantity > 0 %}
+          <!-- <span class="order-list__item-refunded"><span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif; font-size:13px; letter-spacing: 0.352px; font-size:13px; font-weight:500; color:#B00020;line-height: 1.5;">Refunded</span></span> -->
+        {% endif %}
+
+        {% if line.discount_allocations %}
+          {% for discount_allocation in line.discount_allocations %}
+            {% if discount_allocation.discount_application.target_selection != 'all' %}
+            <p>
+              <span class="order-list__item-discount-allocation">
+                <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+                <span>
+                  {{ discount_allocation.discount_application.title | upcase }}
+                  (-{{ discount_allocation.amount | money }})
+                </span>
+              </span>
+            </p>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </td>
+        {% if expand_bundles and line.bundle_parent? %}
+          <td class="order-list__parent-price-cell">
+        {% else %}
+          <td class="order-list__price-cell">
+        {% endif %}
+        {% if line.original_line_price != line.final_line_price %}
+          <del class="order-list__item-original-price">{{ line.original_line_price | money }}</del>
+        {% endif %}
+          <p class="order-list__item-price">
+            {% if line.final_line_price > 0 %}
+              <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;">{{ line.final_line_price | money }}</span>
+            {% else %}
+              <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#B00020;letter-spacing: 0.352px;">Refunded</span>
+            {% endif %}
+          </p>
+        </td>
+    </table>
+  </td>
+</tr>
+
+    {% endfor %}
+  </table>
+
+            {% endif %}
+            <table class="row subtotal-lines" style="border:none;margin-bottom:20px;">
+  <tr>
+    
+    <td>
+      <table class="row subtotal-table" border="0">
+
+        
+{% assign total_order_discount_amount = 0 %}
+{% assign has_shipping_discount = false %}
+{% assign epsilon = 0.00001 %}
+
+{% for discount_application in discount_applications %}
+  {% if discount_application.target_selection == 'all' and discount_application.target_type == 'line_item' %}
+    {% assign order_discount_count = order_discount_count | plus: 1 %}
+    {% assign total_order_discount_amount = total_order_discount_amount | plus: discount_application.total_allocated_amount %}
+  {% endif %}
+  {% if discount_application.target_type == 'shipping_line' %}
+    {% assign has_shipping_discount = true %}
+    {% assign shipping_discount_title = discount_application.title %}
+    {% if discount_application.total_allocated_amount == 0 %}
+      {% assign discount_value_price = discount_application.value | times: 100 %}
+    {% else %}
+      {% assign discount_value_price = discount_application.total_allocated_amount %}
+    {% endif %}
+    {% assign shipping_amount_minus_discount_value_price = shipping_price | minus: discount_value_price %}
+    {% assign shipping_amount_minus_discount_value_price_abs = shipping_amount_minus_discount_value_price | abs %}
+    {% assign discount_application_value_type = discount_application.value_type | strip %}
+    {% if shipping_amount_minus_discount_value_price_abs < epsilon or discount_application_value_type == 'percentage' and discount_application.value == 100 %}
+      {% assign free_shipping = true %}
+    {% else %}
+      {% assign discounted_shipping_price = shipping_amount_minus_discount_value_price %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+
+
+<tr class="subtotal-line">
+  <td class="subtotal-line__title" align="left" style="text-align:left;">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">Subtotal</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value" align="right" style="text-align:right;">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">{{ subtotal_price | plus: total_order_discount_amount | money }}</span>
+  </td>
+</tr>
+
+
+
+{% if order_discount_count > 0 %}
+  {% if order_discount_count == 1 %}
+    
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">Order discount</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">-{{ total_order_discount_amount | money }}</span>
+  </td>
+</tr>
+
+  {% endif %}
+  {% if order_discount_count > 1 %}
+    
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">Order discounts</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+       <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:16px;color:#636363;letter-spacing: 0.352px;line-height: 24px;">-{{ total_order_discount_amount | money }}</span>
+  </td>
+</tr>
+
+  {% endif %}
+  {% for discount_application in discount_applications %}
+    {% if discount_application.target_selection == 'all' and discount_application.target_type != 'shipping_line' %}
+      <tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span class="subtotal-line__discount">
+        <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+        <span class="subtotal-line__discount-title">{{ discount_application.title }} (-{{ discount_application.total_allocated_amount | money }})</span>
+      </span>
+    </p>
+  </td>
+</tr>
+
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+
+        {% unless retail_delivery_only %}
+          {% if delivery_method == 'pick-up' %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Pickup</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ shipping_price | money }}</strong>
+  </td>
+</tr>
+
+          {% else %}
+            {% if has_shipping_discount %}
+  {% if free_shipping == true %}
+    
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Shipping</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <del>{{ shipping_price | money}} </del>
+      <strong>Free</strong>
+  </td>
+</tr>
+
+  {% else %}
+    
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Shipping</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+    <del>{{ shipping_price | money }} </del>
+      <strong>{{ discounted_shipping_price | money }}</strong>
+  </td>
+</tr>
+
+  {% endif %}
+  <tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span class="subtotal-line__discount">
+        <img src="{{ 'notifications/discounttag.png' | shopify_asset_url }}" width="18" height="18" class="discount-tag-icon" />
+        <span class="subtotal-line__discount-title">{{ shipping_discount_title }} (-{{ discount_value_price | money }})</span>
+      </span>
+    </p>
+  </td>
+</tr>
+
+{% else %}
+  
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Shipping</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ shipping_price | money }}</strong>
+  </td>
+</tr>
+
+{% endif %}
+
+          {% endif %}
+        {% endunless %}
+
+        {% if total_duties %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Duties</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ total_duties | money }}</strong>
+  </td>
+</tr>
+
+        {% endif %}
+
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:400;">Taxes</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+     <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:1;font-size:16px;color:#636363;font-weight:600;">{{ tax_price | money }}</span>
+  </td>
+</tr>
+
+
+        {% if total_tip and total_tip > 0 %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:400;">Tip</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:1;font-size:16px;color:#636363;font-weight:600;">{{ total_tip | money }}</span>
+  </td>
+</tr>
+
+        {% endif %}
+      </table>
+
+      {% assign transaction_size = 0 %}
+      {% assign transaction_amount = 0 %}
+      {% assign net_transaction_amount_rounding = 0 %}
+      {% for transaction in transactions %}
+        {% if transaction.status == "success" %}
+          {% if transaction.kind == "sale" or transaction.kind == "capture"  %}
+              {% assign transaction_size = transaction_size | plus: 1 %}
+              {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
+              {% if transaction.amount_rounding != nil %}
+                {% assign net_transaction_amount_rounding = net_transaction_amount_rounding | plus: transaction.amount_rounding %}
+              {% endif %}
+          {% elsif transaction.kind == "refund" or transaction.kind == "change" %}
+            {% assign transaction_size = transaction_size | plus: 1 %}
+            {% assign transaction_amount = transaction_amount | minus: transaction.amount %}
+            {% if transaction.amount_rounding != nil %}
+              {% assign net_transaction_amount_rounding = net_transaction_amount_rounding | minus: transaction.amount_rounding %}
+            {% endif %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <table class="row subtotal-table subtotal-table--total" style="border:none;margin-top:0;margin-bottom:20px;">
+      {% if payment_terms and payment_terms.automatic_capture_at_fulfillment == false or b2b?  %}
+        {% assign next_payment = payment_terms.next_payment %}
+        {% assign due_at_date = next_payment.due_at | date: "%b %d, %Y" %}
+        {% if net_transaction_amount_rounding != 0 %}
+          
+<tr class="subtotal-line">
+  <td class="subtotal-line__title" style="padding: 0 !important;">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">Total</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value" style="padding:0 !important;">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">{{ total_price | money_with_currency }}</span>
+  </td>
+</tr>
+
+         
+          <div class="subtotal-line__value-small">
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Cash rounding</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{% if net_transaction_amount_rounding < 0 %}-{% endif %} {{ net_transaction_amount_rounding | abs | money }}</strong>
+  </td>
+</tr>
+
+          </div>
+          <tr><td colspan="2" class="subtotal-table__line"></td></tr>
+        {% endif %}
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">Total</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</span>
+  </td>
+</tr>
+
+
+
+        <!-- <div class="payment-terms">
+          {% assign next_amount_due = total_price %}
+          {% if next_payment %}
+            {% assign next_amount_due = next_payment.amount_due %}
+          {% endif %}
+
+          {% if payment_terms.type == 'receipt' %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Total due on receipt</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ next_amount_due | money_with_currency }}</strong>
+  </td>
+</tr>
+
+          {% elsif payment_terms.type == 'fulfillment' %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Total due on fulfillment</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ next_amount_due | money_with_currency }}</strong>
+  </td>
+</tr>
+
+          {% else %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Total due {{ due_at_date }}</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ next_amount_due | money_with_currency }}</strong>
+  </td>
+</tr>
+
+          {% endif %}
+        </div> -->
+      {% else %}
+        
+<tr class="subtotal-line">
+  <td class="subtotal-line__title" style="padding: 0 !important;">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">Total</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value" style="padding: 0 !important;">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">{{ total_price | money_with_currency }}</span>
+  </td>
+</tr>
+
+        {% if net_transaction_amount_rounding != 0 %}
+
+          <div class="subtotal-line__value-small">
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Cash rounding</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{% if net_transaction_amount_rounding < 0 %}-{% endif %} {{ net_transaction_amount_rounding | abs | money }}</strong>
+  </td>
+</tr>
+
+          </div>
+          {% if financial_status == 'paid' %}
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span>Paid</span>
+        <br>
+        <small>{{ gateway | capitalize }}</small>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</strong>
+  </td>
+</tr>
+
+          {% endif %}
+        {% endif %}
+        {% if transaction_amount != total_price and payment_terms == nil%}
+          <div class="payment-terms">
+            
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:600;font-size:20px;color:#000000;letter-spacing: 0.2px;line-height: 130%;">Total</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <strong>{{ transaction_amount | plus: net_transaction_amount_rounding | money_with_currency }}</strong>
+  </td>
+</tr>
+
+          </div>
+        {% endif %}
+      {% endif %}
+      </table>
+
+      {% if total_discounts > 0 %}
+        <p class="total-discount" style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:400;font-size:16px;color:#636363;letter-spacing: 0.2px;line-height: 130%;">
+          You saved <span class="total-discount--amount">{{ total_discounts | money }}</span>
+        </p>
+      {% endif %}
+
+     
+      {% if transaction_size > 0 %}
+        <table class="row subtotal-table" >
+         
+
+          {% for transaction in transactions %}
+            {% assign amount_rounding = 0 %}
+            {% if transaction.amount_rounding != 0 %}
+              {% assign amount_rounding =  transaction.amount_rounding %}
+            {% endif %}
+            {% if transaction.status == "success" and transaction.kind == "capture" or transaction.kind == "sale" %}
+              {% if transaction.payment_details.gift_card_last_four_digits %}
+                {% capture transaction_name %}Gift card (ending with {{ transaction.payment_details.gift_card_last_four_digits }}){% endcapture %}
+              {% elsif transaction.payment_details.credit_card_company %}
+                {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (ending in {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
+              {% else %}
+                {% capture transaction_name %}{{ transaction.gateway_display_name }}{% endcapture %}
+              {% endif %}
+
+              
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p>
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:400">{{transaction_name}}</span>
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:600">{{ transaction.amount | plus: amount_rounding | money }}</span>
+  </td>
+</tr>
+
+            {% endif %}
+            {% if transaction.kind == 'refund' %}
+              {% if transaction.payment_details.gift_card_last_four_digits %}
+                {% assign refund_method_title = transaction.payment_details.type %}
+              {% elsif transaction.payment_details.credit_card_company %}
+                {% assign refund_method_title = transaction.payment_details.credit_card_company %}
+              {% else %}
+                {% assign refund_method_title = transaction.gateway_display_name %}
+              {% endif %}
+
+              
+<tr class="subtotal-line">
+  <td class="subtotal-line__title">
+    <p style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:400;">
+     Refunded Amount:
+        
+    </p>
+  </td>
+  <td class="subtotal-line__value">
+      <span style="font-family:'Proxima Nova','Helvetica Neue',sans-serif;letter-spacing:.352px;line-height:24px;font-size:16px;color:#636363;font-weight:600;">{{ transaction.amount | plus: amount_rounding | money }}</span>
+  </td>
+</tr>
+
+            {% endif %}
+          {% endfor %}
+        </table>
+      {% endif %}
+
+      
+    </td>
+  </tr>
+</table>
+
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+
+          {% if requires_shipping and shipping_address %}
+          <table class="row section">
+  <tr>
+    <td class="section__cell" style="font-family:'Proxima Nova','Helvetica Neue',Arial,sans-serif; font-size:15px;padding:20px 0px;">
+      <center>
+        <table class="container">
+          <tr>
+            <td>
+              <h3>Customer information</h3>
+            </td>
+          </tr>
+        </table>
+        <table class="container">
+          <tr>
+            <td>
+              
+
+            <table class="row">
+              <tr>
+                <td class="customer-info__item">
+                  <h4>Shipping address</h4>
+                  {{ shipping_address | format_address }}
+                </td>
+              </tr>
+            </table>
+
+            <table class="row">
+              <tr>
+                <td class="customer-info__item">
+                  <h4>Shipping method</h4>
+                  <p>{{ shipping_method.title }}</p>
+                </td>
+              </tr>
+            </table>
+
+            </td>
+          </tr>
+        </table>
+      </center>
+    </td>
+  </tr>
+</table>
+          {% endif %}
+
+
+
+          
+
+
+            <table class="container">
+                <tr>
+                    <td>
+                        <table style="max-width: 600px;border-top:1px solid #cccccc;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr align="center">
+                                <td width="600" height="48" bgcolor="#FFFFFF"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <p style="text-align:center;font-family:'Proxima Nova','Helvetica Neue',sans-serif;font-weight:500;font-size:24px;color:#000000;line-height:1.4;letter-spacing:-1.2px;text-transform:uppercase;">Need Help With Your Order?</p>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td width="600" height="20" bgcolor="#FFFFFF"></td>
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <a href="{{ shop.url | append: '/pages/help-center' }}" style="display:inline-block;white-space:nowrap;background-color:#FFFFFF;border:1px solid #000000;padding:12px 48px;color:#000000;font-family:'Proxima Nova','Helvetica Neue',sans-serif;text-transform:uppercase;text-align:center;font-weight:500;font-size:16px;letter-spacing:0.352px;">Contact Us</a>
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <td width="600" height="48" bgcolor="#FFFFFF"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+         </td>
+      </tr>
+     </table>
+
+    <table cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;" class="stylingblock-content-wrapper">
+        <tr>
+            <td class="stylingblock-content-wrapper camarker-inner">
+                <table class="row section" style="max-width: 600px;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>
+                                <a href="{{ shop.url | append: '/collections/womens-shop-all?utm_source=Alo%20Yoga&utm_medium=Shopify&utm_campaign=pos-mobile-receipt' }}">
+                                    <img style="display: block; max-width: 100%;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/d683c65c-7787-4355-943a-870b9c3aca16.jpg?v=1753225277" width="300" border="0" alt="WOMENS"></a></td>
+                            <td>
+                                <a href="{{ shop.url | append: '/pages/mens?utm_source=Alo%20Yoga&utm_medium=Shopify&utm_campaign=pos-mobile-receipt' }}">
+                                    <img style="display: block; max-width: 100%;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/72ec4e84-7a13-42fd-b2be-7bf6214881fd.jpg?v=1753225327" width="300" border="0" alt="MENS"></a></td>
+                        </tr>
+                </table>
+                <table style="max-width: 600px;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr align="center">
+                        <td width="600" height="50" bgcolor="#FFFFFF">&nbsp;</td>
+                    </tr>
+                </table>
+                <table class="row section" style="max-width: 600px;border-top: 1px solid #cccccc;border-bottom: 1px solid #cccccc;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center">
+                            <a href="{{ shop.url | append: '/pages/access?utm_source=Alo%20Yoga&utm_medium=Shopify&utm_campaign=pos-mobile-receipt' }}">
+                                <img style="display: block; width:100%;max-width:600px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/77f36870-2100-47cf-97e7-c699d05be7be.jpg?v=1753225384" width="600" border="0" alt="ALWAYS REWARDS SEASON VISIT ALO ACCESS REWARDS SHOP"></a></td>
+                    </tr>
+                </table>
+
+                <table style="max-width: 600px;border-bottom: 1px solid #cccccc;width:100%;" align="center" width="600" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" style="max-width: 600px;line-height:0;border:0;background-color:#ffffff; width:100%;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+                                <tr>
+                                    <td width="33.33%" style="line-height:0;">
+                                        <a href="{{ shop.url | append: '/pages/orders-and-shipping-support' }}" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:200px; width:100%;max-height:161px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/9cb9803a-b363-46ae-889c-e9d8f9026a1c.jpg?v=1753225433" width="200" border="0" alt="FAST &amp; FREE SHIPPING"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="{{ shop.url | append: '/pages/returns-support' }}" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:200px;width:100%;max-height:161px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/97dc2f96-5880-4644-8afa-32e7e708e195.jpg?v=1753225474" width="200" border="0" alt="FREE RETURNS &amp; EXCHANGES"></a>
+                                    </td>
+                                    <td width="33.33%" style="line-height:0;">
+                                        <a href="{{ shop.url }}" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:200px; width:100%;max-height:161px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/14b99fb6-2c0b-46ba-983b-7c31ac609ef9.jpg?v=1753225517" width="200" border="0" alt="PAY LATER WITH AFTERPAY"></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table width="600" border="0" cellspacing="0" cellpadding="0" align="center" style="max-width:600px;width:100%;">
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" style="max-width: 600px;line-height:0;border:0;background-color:#ffffff;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="25%" style="line-height:0;">
+                                        <a href="https://www.instagram.com/aloyoga" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:150px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/ee799b40-45f5-46c0-928b-208d486cfc81.jpg?v=1753225572" width="150" border="0" alt=""></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.instagram.com/aloyoga" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:75px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/f4e85a42-b0ee-4aea-b808-518d68476cd6.jpg?v=1753225615" width="75" border="0" alt="INSTAGRAM"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.tiktok.com/@alo?lang=en" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:75px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/a7b51446-01be-4806-a660-faa453a47a92.jpg?v=1753225654" width="75" border="0" alt="TIKTOK"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.youtube.com/channel/UCJEi1foUiGObzzQM3QA2H5A" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:75px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/189086d3-064c-434d-8f94-6b7f4f304091.jpg?v=1753225693" width="75" border="0" alt="YOUTUBE"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.facebook.com/aloclothing/" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:75px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/b51785d9-2ea2-46f3-a308-5e19a3e647d6.jpg?v=1753225736" width="75" border="0" alt="FACEBOOK"></a>
+                                    </td>
+                                    <td width="25%" style="line-height:0;">
+                                        <a href="https://www.facebook.com/aloclothing/" style="text-decoration:none;" target="_blank">
+                                            <img style="display:block; max-width:150px; width:100%;max-height: 106px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/131ba0a2-6eea-4b80-b39b-64f05ce770f8.jpg?v=1753225778" width="150" border="0" alt=""></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <table role="presentation" style="max-width: 600px;line-height:0;border:0;background-color:#ffffff; width:100%;" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#ffffff">
+                                <tr>
+                                    <td width="25%" style="line-height:0;">
+                                        <a href="{{ shop.url | append: '/pages/app' }}" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:150px; width:100%;max-height: 168px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/45552c55-e9ba-4695-bfb7-80ee977eb947.jpg?v=1753225834" width="150" border="0" alt=""></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="{{ shop.url | append: '/pages/app' }}" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:100px; width:100%;height:auto; max-height:168px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/91d9af51-8006-4a24-8e45-e8c73599e0a2.jpg?v=1753225871" width="100" border="0" alt="SHOP THE APP"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.aloyoga.com/pages/alo-moves" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:100px; width:100%;height:auto; max-height:168px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/c2ee65c8-8525-46a4-ad8e-f1df6280e883.jpg?v=1753225906" width="100" border="0" alt="ALO MOVES MOVE AT HOME"></a>
+                                    </td>
+                                    <td style="line-height:0;">
+                                        <a href="https://www.aloyoga.com/pages/stores" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:100px; width:100%;height:auto; max-height:168px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/3d55b14d-47df-4b1e-91e9-1b629ab394e0.jpg?v=1753225947" width="100" border="0" alt="FIND A STORE"></a>
+                                    </td>
+                                    <td width="25%" style="line-height:0;">
+                                        <a href="https://www.aloyoga.com/pages/stores" target="_blank" style="text-decoration:none;">
+                                            <img style="display:block; max-width:150px; width:100%;max-height: 168px;" src="https://cdn.shopify.com/s/files/1/2185/2813/files/90bf00c6-161d-4139-a672-eeeea280f021.jpg?v=1753225988" width="150" border="0" alt=""></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+ <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td width="600" style="height: 20px;" colspan="2" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+          <p style="font-size:10px;color:#605e5c;font-family:Arial,Helvetica,sans-serif;"><b>*Alo Beauty Shipping Information: </b>Alo Beauty is not able to be shipped to Brunei, Cambodia, Timor-Leste, Indonesia, Lao PDR, Malaysia, Myanmar, Philippines, Singapore, Thailand and Vietnam.</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="600" style="height: 20px;border-bottom: 1px solid #cccccc;" colspan="2" bgcolor="#FFFFFF">&nbsp;</td>
+    </tr>
+    <tr align="center">
+        <td align="center" valign="middle">
+          <br>
+            <span style="color:#605e5c;font-family:Tahoma,Geneva,sans-serif;font-size:11px;">RETURN POLICY: You may return merchandise purchased in-store at full price to any domestic Alo location for an exchange, a full refund to the original form of payment, or gift card within 30 days of purchase.  Purchases paid using split payment (part gift card, part other payment method) will always be refunded to the gift card(s) first.  To qualify for a return or exchange, all items must have the original tags attached, all packaging included, be in unused and in sellable condition, and be accompanied by the original sales receipt.  All supplements, bodysuits and underwear are final sale and cannot be returned or exchanged.</span></td>
+
+ </table>
+              <!--[if (gte mso 9)|(IE)]>
+              </td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!--[if (gte mso 9)|(IE)]>
+  </td></tr></table><![endif]-->
+      <!-- // FOOTER SECTION (RESPONSIVE) -->
+      <!-- / OUTER CONTAINER (GMAIL) -->
+      <custom name="opencounter" type="tracking">
+    </center>
+  </body>
+  
+  </html>

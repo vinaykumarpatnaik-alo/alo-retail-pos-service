@@ -1,0 +1,36 @@
+{
+    "timeZone": "America/Los_Angeles",
+    "slaTime": 90,
+    "currentDayOrderCount": 1,
+    "openOrderCount": 1,
+    "pickPackOrderCount": 0,
+    "completedOrderCount": 1,
+    "openOrderDetails": [
+        {
+            "orderId": "6139968880820_10022_539",
+            "orderDate": "2024-12-18T00:18:51"
+        },
+        {
+            "orderId": "6139968880850_10022_539",
+            "orderDate": "2024-12-18T04:50:51"
+        },
+        {
+            "orderId": "6139968880870_10022_539",
+            "orderDate": "2024-12-17T02:24:51"
+        },
+        {
+            "orderId": "6139968880890_10022_539",
+            "orderDate": "2024-12-18T03:24:51"
+        },
+        {
+            "orderId": "6139968880800_10022_539",
+            "orderDate": "2024-12-18T04:18:51"
+        }
+    ],
+    "readyForPickUpOrderDetails": [
+        {
+            "orderId": "6139968880820_10022_539",
+            "orderDate": "2024-12-18T01:22:51"
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+  "main": {
+    "PointBalance": "Solde de points",
+    "EligibleGiftRewards": "Admissible pour cadeau(s)/récompense(s)",
+    "AddCustomer": "Ajouter un client",
+    "AddItem": "Ajouter un article",
+    "AddCustomerItem": "Ajouter un client et un article",
+    "AloAccess": "Accès Alo",
+    "Tier": "Niveau",
+    "Name": "Nom",
+    "Discounts": "Remises",
+    "Gifts": "Cadeaux",
+    "Rewards": "Récompenses",
+    "Error": "Erreur",
+    "CustomerOptInError": "Le client n'a pas encore adhéré au programme Alo Access. S'ils souhaitent adhérer, retournez à la tuile 'Modifier le client' et sélectionnez la case à cocher 'Adhésion à Alo Access'.",
+    "EmailError": "Veuillez demander au client de fournir une adresse e-mail pour s'inscrire, puis de la réclamer pour les récompenses.",
+    "OptOutAloAccessError": "Le client a choisi de ne pas adhérer à Alo Access. Pour obtenir un soutien supplémentaire ou poser des questions, veuillez le renvoyer vers le service client.",
+    "SaveToCart": "Enregistrer et ajouter au panier",
+    "AppliedToCart": "Déjà appliqué au panier",
+    "Welcome Gift": "Cadeau de bienvenue",
+    "ordersAbove": "Pour les commandes supérieures à",
+    "AlreadyRedeemed": "Client a déjà réclamé le cadeau",
+    "AListError": "Pour les a-list et l'accès complet uniquement",
+    "BirthdayNotProvided": "Anniversaire du client non fourni",
+    "BirthdayNotCurrentMonth": "Anniversaire pas dans le mois en cours",
+    "MorePointsNeeded": "Plus de points nécessaires"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "@alo-retail-pos-service/employee-order-events",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "bun build src/index.ts --target=node --format=esm --outdir=dist --sourcemap=external",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@alo-retail-pos-service/pos-domain": "*",
+    "@aws-lambda-powertools/logger": "^2.29.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.150",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.0"
+  }
+}

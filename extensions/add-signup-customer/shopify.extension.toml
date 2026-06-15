@@ -1,0 +1,22 @@
+api_version = "2025-07"
+
+[[extensions]]
+uid = "e402a058-895b-dd1a-4e94-ed9d8b840919bcc5279d"
+type = "ui_extension"
+name = "Add-Signup-Customer"
+
+handle = "add-signup-customer"
+description = "Add-Signup-Customer"
+
+# Controls where in POS your extension will be injected,
+# and the file that contains your extension’s source code.
+[[extensions.targeting]]
+module = "./src/Tile.tsx"
+target = "pos.home.tile.render"
+
+
+[[extensions.targeting]]
+module = "./src/index.tsx"
+target = "pos.home.modal.render"
+
+

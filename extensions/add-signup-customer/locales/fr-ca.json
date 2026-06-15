@@ -1,0 +1,27 @@
+{
+  "main": {
+    "Cancel":"Annuler",
+    "SavetoCart": "Enregistrer et Ajouter au panier",
+    "Tier":"Niveau",
+    "PointBalance":"Points",
+    "FirstName":"Prénom",
+    "LastName":"Nom de famille",
+    "FirstNamePlaceHolder":"Entrez votre prénom",
+    "LastNamePlaceHolder":"Entrez votre nom de famille",
+    "EmailAddress":"Adresse courriel",
+    "EmailPlaceHolder":"Entrez votre adresse courriel",
+    "PhoneNumber": "Numéro de téléphone",
+    "PhoneNumberPlaceholder":"Entrez votre numéro de téléphone",
+    "Birthday":"Date de naissance",
+    "AloAccessOptIn":"Accès Alo Opt In?",
+    "MarketingEmails":"Courriels de marketing?",
+    "IncorrectEmail":"Format d'email incorrect",
+    "FieldRequired":"Ce champ est obligatoire",
+    "PhonenumberTaken":"Le numéro de téléphone est déjà utilisé",
+    "EmailTaken":"L'adresse courriel est déjà utilisée",
+    "ValidPhoneNumber":"Entrez un numéro de téléphone valide",
+    "MarketingConsent":"Impossible de définir le consentement marketing",
+    "SignUpNewCustomer":"Inscrire le nouveau client",
+    "EditCustomer":"Modifier le client"
+  }
+}

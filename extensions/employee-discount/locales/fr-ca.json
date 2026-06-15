@@ -1,0 +1,62 @@
+{
+    "main": {
+      "title": "Programme de rabais pour les employés",
+      "CurrentSpend": "Dépenses actuelles",
+      "AnnualLimit": "Limite annuelle",
+      "ExceedLimit": "Les dépenses actuelles de l'employé ont dépassé la limite annuelle. La réduction ne peut donc pas être appliquée au panier.",
+      "TryAgain": "Une erreur s'est produite. Veuillez réessayer!.",
+      "EmployeeNotFound": "Employé introuvable. Veuillez demander à l'employé de contacter son manager/superviseur.",
+      "DiscountSuspended": "Le rabais pour les employés est actuellement suspendu. Veuillez contacter votre responsable pour plus d'informations.",
+      "ValidatingPhone": "Validation du téléphone",
+      "StaffDifferent": "Le personnel et le client doivent être différents",
+      "DiscountApplied": "Rabais appliquée",
+      "DiscountNotApplied": "Rabais non appliqué",
+      "AddCustomer": "Ajoutez d'abord le client et les articles au panier",
+      "ManagerRequired": "Manager ou responsable requis pour finaliser la transaction.",
+      "VerifyPermission": "Veuillez patienter, vérification de l'utilisateur et des autorisations.",
+      "EmployeeLookup": "Veuillez fournir le numéro de téléphone de l'employé à rechercher.",
+      "EmployeePhone": "Téléphone de l'employé",
+      "VERIFY": "VÉRIFIER",
+      "CHANGENUMBER": "CHANGER DE NUMÉRO (numéro de téléphone)",
+      "Loading": "Veuillez patienter Chargement......",
+      "EmployeeInformation": "Informations sur les employés",
+      "Name": "Nom",
+      "JobTitle": "Titre d'emploi",
+      "Location": "Emplacement",
+      "loading": "chargement...",
+      "PleasecheckID": "Veuillez vérifier votre pièce d'identité",
+      "APPLYDISCOUNT": "APPLIQUER LA RÉDUCTION",
+      "StaffIdMandatory": "L’identifiant du personnel est obligatoire. Veuillez contacter votre responsable",
+      "EmailUndefined": "L’identifiant du personnel est obligatoire pour trouver l'e-mail. L'e-mail n'est pas défini.",
+      "ReviewEmail": "est introuvable. Veuillez vérifier votre adresse e-mail dans votre profil employe.",
+      "NotWorkEmail": "n'est pas un e-mail professionnel valide. Veuillez demander à votre responsable de le corriger dans votre profil de personnel",
+      "AddCustomers": "Ajouter un client",
+      "AddItem": "Ajouter un article",
+      "AddCustomerItem": "Ajouter un client et un article",
+      "LeadRequired": "Manager ou responsable requis"
+    }
+  }
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

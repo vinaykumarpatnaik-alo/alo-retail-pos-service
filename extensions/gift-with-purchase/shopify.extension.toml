@@ -1,0 +1,20 @@
+# The version of APIs your extension will receive. Learn more:
+# https://shopify.dev/docs/api/usage/versioning
+api_version = "2025-07"
+
+[[extensions]]
+uid = "fc1de260-9022-47d5-bd48-44d6155c611aab86fbdb"
+type = "ui_extension"
+name = "GiftWithPurchase"
+
+handle = "giftwithpurchase"
+description = "GiftWithPurchase"
+
+# Controls where in POS your extension will be injected,
+# and the file that contains your extension’s source code.
+[[extensions.targeting]]
+module = "./src/index.tsx"
+target = "pos.home.tile.render"
+
+
+

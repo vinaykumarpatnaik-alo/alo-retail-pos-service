@@ -1,0 +1,29 @@
+{
+  "main": {
+    "Cancel":"Cancel",
+    "SavetoCart": "Save & Add to Cart",
+    "Tier":"Tier",
+    "PointBalance":"Points",
+    "FirstName":"First Name",
+    "LastName":"Last Name",
+    "FirstNamePlaceHolder":"Enter your first name",
+    "LastNamePlaceHolder":"Enter your last name",
+    "EmailAddress":"Email Address",
+    "EmailPlaceHolder":"Enter your email",
+    "PhoneNumber": "Phone Number",
+    "PhoneNumberPlaceholder":"Enter your phone number",
+    "Birthday":"Birthday",
+    "AloAccessOptIn":"Alo Access Opt In?",
+    "MarketingEmails":"Marketing Emails?",
+    "IncorrectEmail":"Incorrect Email Format",
+    "FieldRequired":"This field is required",
+    "PhonenumberTaken":"Phone has already been taken",
+    "EmailTaken":"Email has already been taken",
+    "ValidPhoneNumber":"Enter a valid phone number",
+    "MarketingConsent":"Marketing Consent cannot be set",
+    "SignUpNewCustomer":"Sign Up New Customer",
+    "AddCustomer":"Add Customer",
+    "EditCustomer":"Edit Customer"
+  
+  }
+}

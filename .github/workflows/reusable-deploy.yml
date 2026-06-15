@@ -1,0 +1,104 @@
+name: Reusable Deploy
+
+on:
+  workflow_call:
+    inputs:
+      account_id:
+        required: true
+        type: string
+      env_name:
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  code-checks:
+    uses: ./.github/workflows/ci.yml
+
+  deploy-runtime:
+    name: Deploy runtime to ${{ matrix.region }}
+    needs: code-checks
+    strategy:
+      matrix:
+        region:
+          - us-east-1
+          - us-west-2
+      fail-fast: false
+    uses: colorimageapparel/alo-actions/.github/workflows/lambda-deploy.yml@10425e21809c2738f122d65af63f1f604ae00ff4
+    secrets: inherit
+    with:
+      account_id: ${{ inputs.account_id }}
+      region: ${{ matrix.region }}
+      aws_github_action_role_name: gha-alo-retail-pos-service
+      app_name: retail-${{ inputs.env_name }}-pos
+      ecr_repo_name: retail-${{ inputs.env_name }}-pos
+      codedeploy_name: retail-${{ inputs.env_name }}-pos-codedeploy
+      image_tag: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+      build_target: runtime-lambda
+      docker_cache_scope: retail-pos-runtime-${{ inputs.env_name }}-${{ matrix.region }}
+
+  deploy-employee-order-events-worker:
+    name: Deploy employee-order events worker to ${{ matrix.region }}
+    needs: code-checks
+    runs-on: ubuntu-arm64-8core
+    strategy:
+      matrix:
+        region:
+          - us-east-1
+          - us-west-2
+      fail-fast: false
+    env:
+      ACCOUNT_ID: ${{ inputs.account_id }}
+      AWS_REGION: ${{ matrix.region }}
+      AWS_ROLE_NAME: gha-alo-retail-pos-service
+      FUNCTION_NAME: retail-${{ inputs.env_name }}-pos-employee-order-events
+      IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Build and push worker image
+        uses: colorimageapparel/alo-actions/actions/lambda/build/v1@10425e21809c2738f122d65af63f1f604ae00ff4
+        with:
+          account_id: ${{ env.ACCOUNT_ID }}
+          region: ${{ env.AWS_REGION }}
+          aws_github_action_role_name: ${{ env.AWS_ROLE_NAME }}
+          app_name: ${{ env.FUNCTION_NAME }}
+          ecr_repo_name: ${{ env.FUNCTION_NAME }}
+          image_tag: ${{ env.IMAGE_TAG }}
+          build_target: employee-order-events-worker-lambda
+          docker_cache_scope: retail-pos-employee-order-events-${{ inputs.env_name }}-${{ env.AWS_REGION }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ env.ACCOUNT_ID }}:role/${{ env.AWS_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Update worker Lambda
+        env:
+          IMAGE_URI: ${{ env.ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.FUNCTION_NAME }}:${{ env.IMAGE_TAG }}
+        run: |
+          aws lambda update-function-code --function-name "$FUNCTION_NAME" --image-uri "$IMAGE_URI" --region "$AWS_REGION" >/tmp/worker-update.json
+
+          while true; do
+            STATUS=$(aws lambda get-function --function-name "$FUNCTION_NAME" --region "$AWS_REGION" --query 'Configuration.LastUpdateStatus' --output text)
+
+            if [ "$STATUS" = "Successful" ]; then
+              break
+            fi
+
+            if [ "$STATUS" = "Failed" ]; then
+              aws lambda get-function --function-name "$FUNCTION_NAME" --region "$AWS_REGION" --query 'Configuration.LastUpdateStatusReason' --output text
+              exit 1
+            fi
+
+            sleep 5
+          done
+
+      - name: Confirm worker image
+        run: |
+          aws lambda get-function --function-name "$FUNCTION_NAME" --region "$AWS_REGION" --query 'Code.ImageUri' --output text

@@ -1,0 +1,22 @@
+api_version = "2025-07"
+
+[[extensions]]
+uid = "dca386be-543b-72bd-ec3c-387a819ee7ee4e37595f"
+type = "ui_extension"
+name = "Alo-Access"
+
+handle = "alo-access"
+description = "Alo-Access"
+
+# Controls where in POS your extension will be injected,
+# and the file that contains your extension’s source code.
+[[extensions.targeting]]
+module = "./src/Tile.tsx"
+target = "pos.home.tile.render"
+
+
+[[extensions.targeting]]
+module = "./src/index.tsx"
+target = "pos.home.modal.render"
+
+

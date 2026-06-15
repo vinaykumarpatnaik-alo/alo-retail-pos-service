@@ -1,0 +1,28 @@
+{
+  "main": {
+    "PointBalance":"Point Balance",
+    "EligibleGiftRewards":"Eligible for gift(s)/reward(s)",
+    "AddCustomer":"Add Customer",
+    "AddItem":"Add Item",
+    "AddCustomerItem":"Add Customer & Item",
+    "AloAccess":"Alo Access",
+    "Tier":"Tier",
+    "Name":"Name",
+    "Discounts":"Discounts",
+    "Gifts":"Gifts",
+    "Rewards":"Rewards",
+    "Error":"Error",
+    "CustomerOptInError":"Customer has not yet opted into the Alo Access program. If they wish to join, return to the 'Edit Customer' tile and select the 'Alo Access Opt In' checkbox",
+    "EmailError":"Please ask customer to provide email address to enroll and then redeem for rewards",
+    "OptOutAloAccessError":"Customer has opted out of Alo Access. For further support or questions, please have them reach out to Customer Support.",
+    "SaveToCart":"Save and Add to Cart",
+    "AppliedToCart":"Already applied to Cart",
+    "Welcome Gift":"Welcome Gift",
+    "ordersAbove":"For orders above",
+    "AlreadyRedeemed":"Customer already redeemed gift",
+    "AListError":"For a-list and all access only",
+    "BirthdayNotProvided":"Customer birthday not provided",
+    "BirthdayNotCurrentMonth":"Birthday not in current month",
+    "MorePointsNeeded":"More points needed" 
+  }
+}
