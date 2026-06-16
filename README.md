@@ -25,10 +25,11 @@ The ecomm `alo-pos-order-processor` is intentionally not copied here. Employee i
 ```sh
 bun install
 bun run dev
+bun run dev:frontend
 bun run dev:middleware
 ```
 
-The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Bun is used for install/build/test tooling; the deployed middleware and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
+The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Use `bun run dev` for the Shopify app preview flow, and use `bun run dev:frontend` or `bun run dev:middleware` when you only want the local frontend or middleware process. Bun remains the build/test/deploy toolchain. The deployed middleware and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
 
 ## Shopify App Config
 

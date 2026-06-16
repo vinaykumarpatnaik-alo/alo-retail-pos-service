@@ -8,12 +8,17 @@
   ],
   "scripts": {
     "build": "bun run --cwd apps/frontend build && bun run --cwd apps/middleware build && bun run --cwd workers/employee-order-events build",
-    "dev": "bun run --cwd apps/frontend dev",
+    "dev": "bun run shopify app dev --reset",
+    "dev:frontend": "bun run --cwd apps/frontend dev",
     "dev:middleware": "bun run --cwd apps/middleware dev",
     "typecheck": "bun run --cwd apps/frontend typecheck && bun run --cwd apps/middleware typecheck && bun run --cwd packages/pos-domain typecheck && bun run --cwd packages/shopify-auth typecheck && bun run --cwd workers/employee-order-events typecheck",
     "test": "bun test",
+    "shopify": "shopify",
     "shopify:config": "bun scripts/render-shopify-config.mjs",
-    "migrate:config": "bun scripts/migrate-retail-pos-config.mjs"
+    "migrate:config": "bun scripts/migrate-retail-pos-config.mjs",
+    "dev-extension": "bun run shopify app dev --reset",
+    "generate": "bun run shopify app generate",
+    "deploy": "bun run shopify:config && bun run shopify app deploy --config shopify.app.generated.toml --no-release"
   },
   "dependencies": {
     "@remote-ui/async-subscription": "^2.1.17",
