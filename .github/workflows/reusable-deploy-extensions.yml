@@ -1,0 +1,34 @@
+name: Reusable Deploy Extensions
+
+on:
+  workflow_call:
+    inputs:
+      env_name:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Deploy extensions
+        env:
+          SHOPIFY_APP_ENV: ${{ inputs.env_name }}
+          SHOPIFY_CLIENT_ID: ${{ inputs.env_name == 'dev' && secrets.SHOPIFY_RETAIL_POS_DEV_CLIENT_ID || inputs.env_name == 'qa' && secrets.SHOPIFY_RETAIL_POS_QA_CLIENT_ID || secrets.SHOPIFY_RETAIL_POS_PROD_CLIENT_ID }}
+          SHOPIFY_APP_AUTOMATION_TOKEN: ${{ inputs.env_name == 'dev' && secrets.SHOPIFY_RETAIL_POS_DEV_AUTOMATION_TOKEN || inputs.env_name == 'qa' && secrets.SHOPIFY_RETAIL_POS_QA_AUTOMATION_TOKEN || secrets.SHOPIFY_RETAIL_POS_PROD_AUTOMATION_TOKEN }}
+        run: bun run deploy

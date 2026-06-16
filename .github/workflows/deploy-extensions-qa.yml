@@ -1,25 +1,23 @@
-name: Deploy QA
+name: Deploy Extensions QA
 
 on:
   workflow_dispatch:
   push:
     branches:
       - "QA*"
-    paths-ignore:
+    paths:
       - "extensions/**"
 
 concurrency:
-  group: deploy-qa
+  group: deploy-extensions-qa
   cancel-in-progress: false
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
   deploy:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/reusable-deploy-extensions.yml
     secrets: inherit
     with:
       env_name: qa
-      account_id: "058264160686"

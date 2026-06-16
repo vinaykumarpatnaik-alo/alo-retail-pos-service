@@ -1,0 +1,21 @@
+name: Deploy Extensions Prod
+
+on:
+  release:
+    types:
+      - published
+
+concurrency:
+  group: deploy-extensions-prod
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    if: ${{ startsWith(github.event.release.tag_name, 'pos-extensions/') || startsWith(github.event.release.tag_name, 'pos-full/') }}
+    uses: ./.github/workflows/reusable-deploy-extensions.yml
+    secrets: inherit
+    with:
+      env_name: prod

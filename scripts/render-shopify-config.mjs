@@ -38,7 +38,7 @@ api_version = "2026-04"
 
 [access_scopes]
 scopes = "read_users,write_customers,write_draft_orders,write_fulfillments,write_gift_cards,write_inventory,write_order_edits,write_orders,write_products,write_returns"
-use_legacy_install_flow = true
+use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [

@@ -25,17 +25,21 @@ The ecomm `alo-pos-order-processor` is intentionally not copied here. Employee i
 ```sh
 bun install
 bun run dev
-bun run dev:frontend
-bun run dev:middleware
 ```
 
-The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Use `bun run dev` for the Shopify app preview flow, and use `bun run dev:frontend` or `bun run dev:middleware` when you only want the local frontend or middleware process. Bun remains the build/test/deploy toolchain. The deployed middleware and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
+The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Use `bun run dev` for the Shopify app preview flow; keep that process running so Shopify CLI can hot reload extension changes and show POS extension preview/QR output the same way as `alo-pos-apps`. Shopify CLI starts the frontend and middleware through their `shopify.web.toml` files. Bun remains the install/build/test/deploy toolchain. The deployed middleware and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
 
 ## Shopify App Config
 
 Shopify app TOML is generated at deploy time from real app IDs. Set `SHOPIFY_APP_ENV` to `dev`, `qa`, or `prod`, set `SHOPIFY_CLIENT_ID` to the matching retail Shopify app client ID, then run `bun run shopify:config`. The generated `shopify.app.generated.toml` is intentionally ignored.
 
-Extension deploys use `.github/workflows/deploy-extensions.yml`. Manual runs can target `dev`, `qa`, or `prod`; pushes to `main` deploy QA extensions; published `pos-extensions/vX.Y.Z` releases deploy prod extensions. CI reads Shopify deploy values from GitHub Actions secrets:
+Static Shopify app configs are also present for local/manual use:
+
+- `shopify.app.alo-retail-pos-dev.toml`
+- `shopify.app.alo-retail-pos-qa.toml`
+- `shopify.app.alo-retail-pos-prod.toml`
+
+Extension deploys use one workflow per environment: `.github/workflows/deploy-extensions-dev.yml`, `.github/workflows/deploy-extensions-qa.yml`, and `.github/workflows/deploy-extensions-prod.yml`. Dev extension deploys run manually or from `release*` / `Release*` branches when `extensions/**` changes. QA extension deploys run manually or from `QA*` branches when `extensions/**` changes. Prod extension deploys run from published `pos-extensions/vX.Y.Z` releases, or from `pos-full/vX.Y.Z` releases when runtime and extensions should deploy together. Each workflow calls `bun run deploy` with the matching GitHub Actions secrets:
 
 - `SHOPIFY_RETAIL_POS_DEV_CLIENT_ID`
 - `SHOPIFY_RETAIL_POS_QA_CLIENT_ID`

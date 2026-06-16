@@ -1,10 +1,11 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "7e8ffce90bdb1cb538451d4cea754785"
-name = "Alo Retail POS Dev"
-application_url = "https://api.dev.aloyoga.com/pos/v1/"
+# Replace with the QA Shopify app client ID from the Shopify Dev Dashboard.
+client_id = "SHOPIFY_RETAIL_POS_QA_CLIENT_ID"
+name = "Alo Retail POS QA"
+application_url = "https://api.qa.aloyoga.com/pos/v1/"
 embedded = true
-handle = "alo-retail-pos-dev"
+handle = "alo-retail-pos-qa"
 
 [build]
 automatically_update_urls_on_dev = true
@@ -19,9 +20,9 @@ use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
-  "https://api.dev.aloyoga.com/pos/v1/auth/callback",
-  "https://api.dev.aloyoga.com/pos/v1/auth/shopify/callback",
-  "https://api.dev.aloyoga.com/pos/v1/api/auth/callback"
+  "https://api.qa.aloyoga.com/pos/v1/auth/callback",
+  "https://api.qa.aloyoga.com/pos/v1/auth/shopify/callback",
+  "https://api.qa.aloyoga.com/pos/v1/api/auth/callback"
 ]
 
 [pos]

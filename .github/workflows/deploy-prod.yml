@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ !startsWith(github.event.release.tag_name, 'pos-extensions/') }}
     uses: ./.github/workflows/reusable-deploy.yml
     secrets: inherit
     with:
