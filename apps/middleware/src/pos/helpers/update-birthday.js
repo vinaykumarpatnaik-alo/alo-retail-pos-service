@@ -1,12 +1,12 @@
 import { useControlledAloApiFetch } from "./useControlledFetch.js";
 import util from "util";
-const BIRTHDATE_UPDATE_END_POINT = process.env.BIRTHDATE_UPDATE_END_POINT;
 import { logMetric, hrtimeToMilliseconds } from "./metric-util.js";
 
 export async function updateBirthday(birthdate, customerId, token, api_name) {
   const metricName = "v1_account_birthday";
   const startTime = process.hrtime();
   const time_var = "/v1/account/birthday";
+  const birthdayUpdateEndpoint = process.env.BIRTHDATE_UPDATE_END_POINT;
   let retVal;
   let retries = 3;
   const retryDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms)); // Delay function
@@ -36,11 +36,11 @@ export async function updateBirthday(birthdate, customerId, token, api_name) {
     },
   };
 
-  console.log("updateBirthday BIRTHDATE_UPDATE_END_POINT: ", BIRTHDATE_UPDATE_END_POINT);
+  console.log("updateBirthday BIRTHDATE_UPDATE_END_POINT: ", birthdayUpdateEndpoint);
 
   while (retries > 0) {
     try {
-      const response = await useControlledAloApiFetch(BIRTHDATE_UPDATE_END_POINT.toString(), options);
+      const response = await useControlledAloApiFetch(birthdayUpdateEndpoint.toString(), options);
 
       console.log("B'day Response Status = ", response.status);
       if (!response.ok) {

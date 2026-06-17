@@ -1,7 +1,7 @@
 import { useControlledAloApiFetch } from "./useControlledFetch.js";
-export const BLOCKED_CUSTOMER_END_POINT = process.env.BLOCKED_CUSTOMER_END_POINT || '';
 
 export async function checkedIfBlocked(emailID) {
+  const blockedCustomerEndpoint = process.env.BLOCKED_CUSTOMER_END_POINT || '';
   console.log("The BLOCKED_CUSTOMER_END_POINT api request", emailID);
   const time_var = '/loyalty/blocked';
   console.time(time_var);
@@ -10,10 +10,10 @@ export async function checkedIfBlocked(emailID) {
     const blocked_api_request = JSON.stringify(emailInput);
     console.log(
       "checkedIfBlocked BLOCKED_CUSTOMER_END_POINT:",
-      BLOCKED_CUSTOMER_END_POINT
+      blockedCustomerEndpoint
     );
     const response = await useControlledAloApiFetch(
-      BLOCKED_CUSTOMER_END_POINT?.toString(),
+      blockedCustomerEndpoint?.toString(),
       {
         method: "POST",
         body: blocked_api_request,

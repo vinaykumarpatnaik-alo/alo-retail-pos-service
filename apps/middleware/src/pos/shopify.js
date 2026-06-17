@@ -10,8 +10,8 @@ const scopes = (process.env.SCOPES || process.env.SHOPIFY_SCOPES || "")
 const hostName = (process.env.HOST || process.env.APP_URL || "https://api.aloyoga.com").replace(/^https?:\/\//, "");
 
 const api = shopifyApi({
-  apiKey: process.env.SHOPIFY_API_KEY || "",
-  apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
+  apiKey: process.env.SHOPIFY_CLIENT_ID || "",
+  apiSecretKey: process.env.SHOPIFY_CLIENT_SECRET || "",
   apiVersion: ApiVersion.July25,
   hostName,
   hostScheme: hostName.startsWith("localhost") ? "http" : "https",

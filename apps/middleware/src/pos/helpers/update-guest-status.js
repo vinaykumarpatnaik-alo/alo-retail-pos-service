@@ -1,7 +1,7 @@
 import useControlledFetch from "./useControlledFetch.js";
-export const GUEST_STATUS_SET_LL = process.env.GUEST_STATUS_SET_LL || '';
 
 export async function updateGuestStatus(customerId, customerEmailId, optIn) {
+  const guestStatusSetLl = process.env.GUEST_STATUS_SET_LL || '';
   // const time_var="/loyalty/guest/status";
   // console.time(time_var);
   let guestStatusLoad = {
@@ -22,12 +22,12 @@ export async function updateGuestStatus(customerId, customerEmailId, optIn) {
       "base64"
     );
   // console.log("guest authorization:", auth);
-  console.log(" updateGuestStatus GUEST_STATUS_SET_LL:", GUEST_STATUS_SET_LL);
+  console.log(" updateGuestStatus GUEST_STATUS_SET_LL:", guestStatusSetLl);
   try {
     const timeoutValue = 20000;  //configure to 20 sec instead of default process.env.DEFAULT_API_TIMEOUT
     const timeout = timeoutValue ? parseInt(timeoutValue, 10) : 20000;  // 10 (meaning decimal) and 10000 mills
     console.log("DEFAULT_API_TIMEOUT configured = ",timeout);
-    const response = await useControlledFetch(GUEST_STATUS_SET_LL.toString(), {
+    const response = await useControlledFetch(guestStatusSetLl.toString(), {
       method: "POST",
       body: api_req,
       headers: {
@@ -37,7 +37,7 @@ export async function updateGuestStatus(customerId, customerEmailId, optIn) {
     },timeout);
     const status = response.status;
     const statusText = response.statusText;
-    console.log(`Response from ${GUEST_STATUS_SET_LL} api: `, status );
+    console.log(`Response from ${guestStatusSetLl} api: `, status );
 
     if (status === 201) {
       console.log(
@@ -50,7 +50,7 @@ export async function updateGuestStatus(customerId, customerEmailId, optIn) {
   } catch (err) {
     console.error("GUEST_STATUS_SET_LL api response was not OK",err);
     console.error("GUSET_STATUS_LL FAILED for REQUEST ::  ", api_req);
-    console.log(`error from ${GUEST_STATUS_SET_LL} api: `, err.message);
+    console.log(`error from ${guestStatusSetLl} api: `, err.message);
   }
   // console.timeEnd(time_var);
 }

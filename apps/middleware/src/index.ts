@@ -20,7 +20,9 @@ const port = Number(process.env.PORT ?? "8080");
 const queueRegion = process.env.EMPLOYEE_ORDER_EVENTS_QUEUE_REGION ?? process.env.AWS_REGION ?? process.env.REGION ?? "us-east-1";
 const sqs = new SQSClient({region: queueRegion});
 const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-middleware"});
-let shopifyApiKeyPromise: Promise<string> | undefined;
+const secretsCacheTtlMs = Number(process.env.SECRETS_CACHE_TTL_SECONDS ?? "900") * 1000;
+let runtimeSecretsExpiresAt = 0;
+let runtimeSecretsPromise: Promise<void> | undefined;
 
 function runtimePayload() {
   return {
@@ -28,7 +30,7 @@ function runtimePayload() {
     employeeOrderEventsEnabled: Boolean(process.env.EMPLOYEE_ORDER_EVENTS_QUEUE_URL),
     employeeOrderEventsQueueRegion: queueRegion,
     hrisUserSyncBaseUrl: process.env.HRIS_USER_SYNC_BASE_URL,
-    shopifyApiKeyConfigured: Boolean(process.env.SHOPIFY_API_KEY || process.env.SHOPIFY_API_KEY_SECRET_NAME),
+    shopifyClientIdConfigured: Boolean(process.env.SHOPIFY_CLIENT_ID),
     posTables: {
       session: process.env.SHOPIFY_SESSION_TABLE_NAME,
       featureConfigs: process.env.POS_FEATURE_CONFIGS_TABLE,
@@ -91,6 +93,12 @@ export const app = new Elysia()
     }
     return {ok: false, error: message};
   })
+  .onBeforeHandle(async ({path}) => {
+    if (path !== "/health") {
+      await ensureRuntimeSecrets();
+      configureRuntimeUrls();
+    }
+  })
   .get("/health", () => ({
     ok: true,
     app: "alo-retail-pos-service",
@@ -143,40 +151,113 @@ async function renderIndexResponse(): Promise<Response> {
 }
 
 async function renderIndexHtml(): Promise<string> {
-  const [html, shopifyApiKey] = await Promise.all([fs.readFile(indexHtmlPath, "utf8"), resolveShopifyApiKey()]);
-  return html.replaceAll("__SHOPIFY_API_KEY__", escapeHtmlAttribute(shopifyApiKey));
+  const [html, shopifyClientId] = await Promise.all([fs.readFile(indexHtmlPath, "utf8"), process.env.SHOPIFY_CLIENT_ID?.trim() ?? ""]);
+  return html.replaceAll("__SHOPIFY_CLIENT_ID__", escapeHtmlAttribute(shopifyClientId));
 }
 
-async function resolveShopifyApiKey(): Promise<string> {
-  const directValue = process.env.SHOPIFY_API_KEY?.trim();
-  if (directValue) return directValue;
+async function ensureRuntimeSecrets(): Promise<void> {
+  const secretRoot = normalizedSecretRoot();
+  if (!secretRoot) return;
 
-  if (!shopifyApiKeyPromise) {
-    shopifyApiKeyPromise = readShopifyApiKeySecret();
+  const now = Date.now();
+  if (now < runtimeSecretsExpiresAt) return;
+
+  if (!runtimeSecretsPromise) {
+    runtimeSecretsPromise = loadRuntimeSecrets(secretRoot)
+      .then(() => {
+        runtimeSecretsExpiresAt = Date.now() + secretsCacheTtlMs;
+      })
+      .finally(() => {
+        runtimeSecretsPromise = undefined;
+      });
   }
 
-  return shopifyApiKeyPromise;
+  await runtimeSecretsPromise;
 }
 
-async function readShopifyApiKeySecret(): Promise<string> {
-  const secretId = process.env.SHOPIFY_API_KEY_SECRET_NAME?.trim();
-  if (!secretId) return "";
+async function loadRuntimeSecrets(secretRoot: string): Promise<void> {
+  const env = process.env.ENV;
+  if (!env) {
+    throw new Error("ENV is required when RETAIL_SECRET_ROOT is configured");
+  }
 
+  const [shopify, aloApi, loyaltyPos, storeFulfillment] = await Promise.all([
+    readJsonSecret(`${secretRoot}/shopify/${env}`),
+    readJsonSecret(`${secretRoot}/alo-api/${env}`),
+    readJsonSecret(`${secretRoot}/loyalty-pos/${env}`),
+    readJsonSecret(`${secretRoot}/store-fulfillment/${env}`),
+  ]);
+
+  setRequiredEnv("SHOPIFY_CLIENT_ID", stringField(shopify, "clientId", "shopify"));
+  setRequiredEnv("SHOPIFY_CLIENT_SECRET", stringField(shopify, "clientSecret", "shopify"));
+  setOptionalEnv("SHOPIFY_API_KEY", optionalStringField(shopify, "apiKey"));
+  setRequiredEnv("ALO_API_KEY", stringField(aloApi, "apiKey", "alo-api"));
+  setRequiredEnv("ALO_API_SECRET_KEY", stringField(aloApi, "apiSecret", "alo-api"));
+  setRequiredEnv("LOYALTYLION_API_TOKEN", stringField(loyaltyPos, "apiToken", "loyalty-pos"));
+  setRequiredEnv("LOYALTYLION_API_SECRET", stringField(loyaltyPos, "apiSecret", "loyalty-pos"));
+  setRequiredEnv("STOREFULFILLMENT_API_KEY", stringField(storeFulfillment, "apiKey", "store-fulfillment"));
+  setRequiredEnv("STOREFULFILLMENT_API_SECRET_KEY", stringField(storeFulfillment, "apiSecret", "store-fulfillment"));
+}
+
+async function readJsonSecret(secretId: string): Promise<Record<string, unknown>> {
   const secretValue = await getSecret(secretId);
-  if (!secretValue) return "";
+  if (!secretValue) throw new Error(`Secret ${secretId} is empty`);
   const secretText = typeof secretValue === "string" ? secretValue : Buffer.from(secretValue).toString("utf8");
-  const parsed = parseSecretValue(secretText);
-  return parsed.trim();
+  const parsed = JSON.parse(secretText) as unknown;
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error(`Secret ${secretId} must be a JSON object`);
+  }
+  return parsed as Record<string, unknown>;
 }
 
-function parseSecretValue(secretText: string): string {
-  try {
-    const parsed = JSON.parse(secretText) as Record<string, unknown>;
-    const value = parsed.SHOPIFY_API_KEY ?? parsed.shopifyApiKey ?? parsed.apiKey ?? parsed.clientId;
-    return typeof value === "string" ? value : secretText;
-  } catch {
-    return secretText;
+function stringField(secret: Record<string, unknown>, field: string, secretName: string): string {
+  const value = secret[field];
+  if (typeof value !== "string" || !value.trim()) {
+    throw new Error(`${secretName}.${field} is required`);
   }
+  return value;
+}
+
+function setRequiredEnv(name: string, value: string): void {
+  process.env[name] = value;
+}
+
+function optionalStringField(secret: Record<string, unknown>, field: string): string | undefined {
+  const value = secret[field];
+  return typeof value === "string" && value.trim() ? value : undefined;
+}
+
+function setOptionalEnv(name: string, value: string | undefined): void {
+  if (value) process.env[name] = value;
+}
+
+function configureRuntimeUrls(): void {
+  const aloApiBaseUrl = normalizedUrl(process.env.ALO_API_BASE_URL);
+  if (aloApiBaseUrl) {
+    setRuntimeEnv("ALO_SET_GUEST_STATUS", `${aloApiBaseUrl}/v1/loyalty/activities`);
+    setRuntimeEnv("BIRTHDATE_UPDATE_END_POINT", `${aloApiBaseUrl}/v1/account/birthday`);
+    setRuntimeEnv("BLOCKED_CUSTOMER_END_POINT", `${aloApiBaseUrl}/v1/loyalty/blocked`);
+    setRuntimeEnv("GIFTS_ENDPOINT", `${aloApiBaseUrl}/v1/loyalty/gifts`);
+    setRuntimeEnv("LLREWARDS_END_POINT", `${aloApiBaseUrl}/v1/loyalty/rewards`);
+  }
+
+  const storeFulfillmentUrl = normalizedUrl(process.env.STOREFULFILLMENT_URL);
+  if (storeFulfillmentUrl) setRuntimeEnv("STOREFULFILLMENT_URL", storeFulfillmentUrl);
+
+  const loyaltyLionGuestStatusUrl = normalizedUrl(process.env.GUEST_STATUS_SET_LL) || "https://api.loyaltylion.com/v2/activities";
+  setRuntimeEnv("GUEST_STATUS_SET_LL", loyaltyLionGuestStatusUrl);
+}
+
+function setRuntimeEnv(name: string, value: string): void {
+  process.env[name] = value;
+}
+
+function normalizedUrl(value: string | undefined): string {
+  return value?.trim().replace(/\/+$/, "") ?? "";
+}
+
+function normalizedSecretRoot(): string {
+  return process.env.RETAIL_SECRET_ROOT?.replace(/\/+$/, "") ?? "";
 }
 
 function escapeHtmlAttribute(value: string): string {

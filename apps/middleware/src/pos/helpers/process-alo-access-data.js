@@ -9,16 +9,6 @@ import getEnableFlags from "./get-enable-flags.js";
 import { logMetric, hrtimeToMilliseconds } from "./metric-util.js";
 
 
-let GIFTS_END_POINT = process.env.GIFTS_ENDPOINT;
-let BLOCKED_CUSTOMER_END_POINT = process.env.BLOCKED_CUSTOMER_END_POINT;
-let LLREWARDS_END_POINT = process.env.LLREWARDS_END_POINT;
-
-if (process.env.NODE_ENV !== "production") {
-    GIFTS_END_POINT = "https://api.qa.alo.software/v1/loyalty/gifts";
-    BLOCKED_CUSTOMER_END_POINT = "https://api.qa.alo.software/v1/loyalty/blocked";
-    LLREWARDS_END_POINT = "https://api.qa.alo.software/v1/loyalty/rewards";
-}
-
 async function processAloAccess(userId, session) {
     let customerData, customerInfo, marketingConsent, loyaltyInfo, exclusionList, blockedStatus, gifts = [], llRewards = [], tempEnableRecords;
     console.log("------ PROCESS ALO ACCESS DATA -------");
@@ -233,12 +223,13 @@ async function getGiftInfo(tags, giftOnly = false) {
     const metricName = "loyalty_gifts";
     const startTime = process.hrtime();
     const time_var = '/loyalty/gifts';
+    const giftsEndpoint = process.env.GIFTS_ENDPOINT || "https://api.qa.alo.software/v1/loyalty/gifts";
 
     try {
         console.time(time_var);
         // Convert the tags array into query parameters
         const queryParams = tags.map(tag => `shopify_customer_tags=${encodeURIComponent(tag)}`).join('&');
-        const url = `${GIFTS_END_POINT}?${queryParams}&is_logged_in=true`;
+        const url = `${giftsEndpoint}?${queryParams}&is_logged_in=true`;
 
         console.log("getGiftInfo GIFTS_END_POINT:", url);
         const response = await useControlledAloApiFetch(url, {
@@ -280,6 +271,7 @@ async function checkedIfBlocked(emailID) {
     const time_var = '/rewards/loyalty/blocked';
     const metricName = "loyalty_blocked";
     const startTime = process.hrtime();
+    const blockedCustomerEndpoint = process.env.BLOCKED_CUSTOMER_END_POINT || "https://api.qa.alo.software/v1/loyalty/blocked";
     try {
         console.time(time_var);
         console.log("The BLOCKED_CUSTOMER_END_POINT api request", emailID);
@@ -290,10 +282,10 @@ async function checkedIfBlocked(emailID) {
         const emailInput = { email: emailID };
         const blocked_api_request = JSON.stringify(emailInput);
 
-        console.log("checkedIfBlocked BLOCKED_CUSTOMER_END_POINT:", BLOCKED_CUSTOMER_END_POINT);
+        console.log("checkedIfBlocked BLOCKED_CUSTOMER_END_POINT:", blockedCustomerEndpoint);
         console.log("checkedIfBlocked REQUEST:", blocked_api_request);
         const response = await useControlledAloApiFetch(
-            BLOCKED_CUSTOMER_END_POINT?.toString(),
+            blockedCustomerEndpoint?.toString(),
             {
                 method: "POST",
                 body: blocked_api_request,
@@ -329,6 +321,7 @@ async function getLLRewards(customerId) {
     const time_var = '/v1/loyalty/rewards';
     const metricName = "v1_loyalty_rewards";
     const startTime = process.hrtime();
+    const llRewardsEndpoint = process.env.LLREWARDS_END_POINT || "https://api.qa.alo.software/v1/loyalty/rewards";
     try {
         console.time(time_var);
         console.log(`LOYALTY LION REWARDS Api request for customer ${customerId}`);
@@ -336,7 +329,7 @@ async function getLLRewards(customerId) {
 
         if (customerId) {
             console.log(`LOYALTY LION REWARDS payload : ${customerId}`);
-            console.log(`LOYALTY LION REWARDS getLLRewards LLREWARDS_END_POINT : ${LLREWARDS_END_POINT}`);
+            console.log(`LOYALTY LION REWARDS getLLRewards LLREWARDS_END_POINT : ${llRewardsEndpoint}`);
 
             const llToken = encodeAuthToken(); // Assuming encodeAuthToken is defined elsewhere in your code
 
@@ -347,7 +340,7 @@ async function getLLRewards(customerId) {
                     Authorization: `Bearer ${llToken}`,
                 },
             };
-            const response = await useControlledAloApiFetch(LLREWARDS_END_POINT.toString(), options);
+            const response = await useControlledAloApiFetch(llRewardsEndpoint.toString(), options);
 
             if (!response.ok) {
                 const errorResult = await response.json();

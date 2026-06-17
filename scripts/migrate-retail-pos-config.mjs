@@ -63,6 +63,16 @@ async function main() {
     sourceRegion: secret.sourceRegion,
     targetRegion: secret.targetRegion,
   }));
+  const secretObjects = (config.secretObjects ?? []).map((secretObject) => ({
+    targetSecretId: renderTemplate(required(secretObject.targetSecretId, "secretObject.targetSecretId is required"), {env}),
+    targetRegion: secretObject.targetRegion,
+    fields: required(secretObject.fields, "secretObject.fields is required").map((field) => ({
+      name: required(field.name, "secretObject.field.name is required"),
+      sourceSecretId: required(field.sourceSecretId, "secretObject.field.sourceSecretId is required"),
+      sourceRegion: field.sourceRegion,
+      optional: Boolean(field.optional),
+    })),
+  }));
 
   const selected = args.only ?? "all";
   const shouldApply = Boolean(args.apply);
@@ -75,8 +85,11 @@ async function main() {
   }
 
   if (selected === "all" || selected === "secrets") {
-    if (secrets.length === 0) {
+    if (secrets.length === 0 && secretObjects.length === 0) {
       console.log("No secrets configured. Add explicit sourceSecretId -> targetSecretId mappings in --config.");
+    }
+    for (const secretObject of secretObjects) {
+      await copySecretObject({...base, ...secretObject, apply: shouldApply});
     }
     for (const secret of secrets) {
       await copySecret({...base, ...secret, apply: shouldApply});
@@ -138,6 +151,61 @@ async function copySecret(options) {
     await writeSecretValue("create-secret", {Name: options.targetSecretId, ...secretValue}, options.targetProfile, targetRegion);
   }
   console.log(`Copied secret value into ${options.targetSecretId}`);
+}
+
+async function copySecretObject(options) {
+  const targetRegion = options.targetRegion ?? DEFAULT_REGION;
+  const sourceNames = options.fields.map((field) => field.sourceSecretId).join(", ");
+  console.log(`Secret object [${sourceNames}] -> ${options.targetSecretId}`);
+
+  if (!options.apply) {
+    for (const field of options.fields) {
+      await describeSecretField(field, options);
+    }
+    return;
+  }
+
+  const values = {};
+  for (const field of options.fields) {
+    const value = await readSecretField(field, options);
+    if (value !== undefined) values[field.name] = value;
+  }
+
+  const secretValue = {SecretString: JSON.stringify(values)};
+  try {
+    await writeSecretValue("put-secret-value", {SecretId: options.targetSecretId, ...secretValue}, options.targetProfile, targetRegion);
+  } catch (error) {
+    if (!String(error.message).includes("ResourceNotFoundException")) {
+      throw error;
+    }
+    await writeSecretValue("create-secret", {Name: options.targetSecretId, ...secretValue}, options.targetProfile, targetRegion);
+  }
+  console.log(`Copied secret object into ${options.targetSecretId}`);
+}
+
+async function describeSecretField(field, options) {
+  try {
+    await aws(["secretsmanager", "describe-secret", "--secret-id", field.sourceSecretId], options.sourceProfile, field.sourceRegion ?? options.sourceRegion ?? DEFAULT_REGION);
+  } catch (error) {
+    if (!field.optional) throw error;
+    console.log(`Optional source secret not found, skipping dry-run check: ${field.sourceSecretId}`);
+  }
+}
+
+async function readSecretField(field, options) {
+  try {
+    return await readSecretString(field.sourceSecretId, options.sourceProfile, field.sourceRegion ?? options.sourceRegion ?? DEFAULT_REGION);
+  } catch (error) {
+    if (!field.optional) throw error;
+    console.log(`Optional source secret not found, skipping field ${field.name}: ${field.sourceSecretId}`);
+    return undefined;
+  }
+}
+
+async function readSecretString(secretId, profile, region) {
+  const secret = JSON.parse(await aws(["secretsmanager", "get-secret-value", "--secret-id", secretId, "--output", "json"], profile, region));
+  if (secret.SecretString) return secret.SecretString;
+  return Buffer.from(secret.SecretBinary ?? "", "base64").toString("utf8");
 }
 
 async function writeSecretValue(command, payload, profile, region) {
@@ -249,5 +317,9 @@ Options:
   --skip-default-tables
   --source-region us-east-1
   --target-region us-east-1
+
+Secret config:
+  secrets[] copies one source secret to one target secret.
+  secretObjects[] composes one JSON target secret from multiple source secrets.
 `);
 }

@@ -5,13 +5,13 @@ import { updateGuestStatus } from "./update-guest-status.js";
 import util from "util";
 import { logMetric, hrtimeToMilliseconds } from "./metric-util.js";
 
-export const ALO_SET_GUEST_STATUS = process.env.ALO_SET_GUEST_STATUS || 'https://api.qa.alo.software/v1/loyalty/activities';
 const ID = "loyalty-direct-integration";
 
 export async function updateGuestStatusWrapper(customerId, customerEmailId, optIn, api_name) {
   const metricName = "loyalty_guest_status";
   const startTime = process.hrtime();
   const time_var = "/loyalty/guest/status";
+  const aloSetGuestStatus = process.env.ALO_SET_GUEST_STATUS || 'https://api.qa.alo.software/v1/loyalty/activities';
   console.time(time_var);
 
   const featureConfg = new DynamoPosAloAccessFeatureConfig();
@@ -35,7 +35,7 @@ export async function updateGuestStatusWrapper(customerId, customerEmailId, optI
     const api_req = JSON.stringify(guestStatusLoad);
     const token = encodeAuthToken();
     console.log("The ALO_SET_GUEST_STATUS api request", api_req);
-    console.log("updateGuestStatus ALO_SET_GUEST_STATUS:", ALO_SET_GUEST_STATUS);
+    console.log("updateGuestStatus ALO_SET_GUEST_STATUS:", aloSetGuestStatus);
 
     let retries = 3;
     const retryDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -53,10 +53,10 @@ export async function updateGuestStatusWrapper(customerId, customerEmailId, optI
           },
         };
 
-        const response = await useControlledAloApiFetch(ALO_SET_GUEST_STATUS.toString(), options);
+        const response = await useControlledAloApiFetch(aloSetGuestStatus.toString(), options);
         const status = response.status;
         const statusText = response.statusText;
-        console.log(util.format("Response from API: %s for Req: %j = %s", ALO_SET_GUEST_STATUS, api_req, status));
+        console.log(util.format("Response from API: %s for Req: %j = %s", aloSetGuestStatus, api_req, status));
 
         if (status === 200 || status === 201) {
           console.log("Successfully got the Guest Status response", statusText);

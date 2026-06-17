@@ -37,7 +37,7 @@ export default async function getInventoryQuantity(session, variantId, api_name)
   if (isShopUS) {
     session = {
       ...session,
-      accessToken: process.env.ALO_INVENTORY_TOKEN
+      accessToken: process.env.SHOPIFY_API_KEY
     }
   }
   const client = new shopify.api.clients.Graphql({ session });

@@ -3,35 +3,125 @@
   "targetProfile": "alo-retail-dev",
   "sourceRegion": "us-east-1",
   "targetRegion": "us-east-1",
-  "tables": [],
-  "secrets": [
+  "_notes": [
+    "Only tables[], secretObjects[], and secrets[] are active migration inputs.",
+    "tableInventory and notMigratedSecrets are documentation so source names stay visible without being copied."
+  ],
+  "tableInventory": [
     {
-      "sourceSecretId": "/ecomm/alo-pos-apps/shopify/key/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/shopify/key/${env}"
+      "sourceTable": "alo_pos_apps_session_data",
+      "targetTable": "retail-${env}-pos-session-data",
+      "migrate": true,
+      "ttl": "disabled",
+      "notes": "Default migration table. Shopify app sessions use id PK and shop-index GSI on shop."
     },
     {
-      "sourceSecretId": "/ecomm/alo-pos-apps/shopify/secret/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/shopify/secret/${env}"
+      "sourceTable": "pos_alo_access_feature_configs",
+      "targetTable": "retail-${env}-pos-feature-configs",
+      "migrate": true,
+      "ttl": "disabled",
+      "notes": "Default migration table. POS feature/config flags."
     },
     {
-      "sourceSecretId": "/ecomm/alo-pos-apps/extension-deploy/cli-partners-token/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/extension-deploy/cli-partners-token/${env}"
+      "sourceTable": "pos_alo_access_exclusion_list",
+      "targetTable": "retail-${env}-pos-exclusion-list",
+      "migrate": true,
+      "ttl": "enabled on ttl",
+      "notes": "Default migration table. Preserve active ttl values."
     },
     {
-      "sourceSecretId": "/ecomm/alo-pos-apps/alo-api/key/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/key/${env}"
+      "sourceTable": "pos_signup_customer_session_data",
+      "targetTable": "retail-${env}-pos-session-data",
+      "migrate": false,
+      "ttl": "not applicable",
+      "notes": "Not copied as a separate table. Add Signup Customer now uses the unified retail POS app session table."
     },
     {
-      "sourceSecretId": "/ecomm/alo-pos-apps/alo-api/secret/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/secret/${env}"
-    },
-    {
-      "sourceSecretId": "/ecomm/alo-pos-apps/loyalty-pos/token/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/loyalty-pos/token/${env}"
-    },
-    {
-      "sourceSecretId": "/ecomm/alo-pos-apps/store-fulfillment/key/dev",
-      "targetSecretId": "/retail/alo-retail-pos-service/store-fulfillment/key/${env}"
+      "sourceTable": "pos_alo_access_session_data",
+      "targetTable": "retail-${env}-pos-session-data",
+      "migrate": false,
+      "ttl": "not applicable",
+      "notes": "Not copied as a separate table. Alo Access now uses the unified retail POS app session table."
     }
-  ]
+  ],
+  "tables": [],
+  "notMigratedSecrets": [
+    {
+      "sourceSecretId": "/ecomm/shopify/posapp/aloapps/cli_token",
+      "reason": "New extension deploys use GitHub Actions secrets instead of migrating the legacy CLI token."
+    },
+    {
+      "sourceSecretId": "/ecomm/shopify/posapp/alo_rewards_api_key",
+      "reason": "Not referenced by the checked alo-pos-apps runtime path; include only if a separate rewards flow is confirmed in scope."
+    },
+    {
+      "sourceSecretId": "/ecomm/shopify/posapp/alo_rewards_secret_key",
+      "reason": "Not referenced by the checked alo-pos-apps runtime path; include only if a separate rewards flow is confirmed in scope."
+    }
+  ],
+  "secretObjects": [
+    {
+      "targetSecretId": "/retail/alo-retail-pos-service/shopify/${env}",
+      "meaning": "Shopify app credential pair. Legacy SHOPIFY_API_KEY is clientId and legacy SHOPIFY_API_SECRET is clientSecret. New runtime env names are SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET.",
+      "fields": [
+        {
+          "name": "clientId",
+          "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_apps_api_key"
+        },
+        {
+          "name": "clientSecret",
+          "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_apps_secret_key"
+        }
+      ],
+      "manualFields": [
+        {
+          "name": "apiKey",
+          "meaning": "Optional Shopify Admin API key/token used by inventory lookup and hydrated as SHOPIFY_API_KEY; populate manually if the source is not confirmed."
+        }
+      ]
+    },
+    {
+      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/${env}",
+      "meaning": "Alo API credential pair used by signup/customer helper flows. New runtime env names are ALO_API_KEY and ALO_API_SECRET_KEY.",
+      "fields": [
+        {
+          "name": "apiKey",
+          "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_api_key"
+        },
+        {
+          "name": "apiSecret",
+          "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_api_secret"
+        }
+      ]
+    },
+    {
+      "targetSecretId": "/retail/alo-retail-pos-service/loyalty-pos/${env}",
+      "meaning": "LoyaltyLion credential pair. Existing app env vars remain LOYALTYLION_API_TOKEN and LOYALTYLION_API_SECRET.",
+      "fields": [
+        {
+          "name": "apiToken",
+          "sourceSecretId": "/ecomm/loyaltylion/wishlist/api_token"
+        },
+        {
+          "name": "apiSecret",
+          "sourceSecretId": "/ecomm/loyaltylion/wishlist/api_secret"
+        }
+      ]
+    },
+    {
+      "targetSecretId": "/retail/alo-retail-pos-service/store-fulfillment/${env}",
+      "meaning": "Store fulfillment credential pair. Existing app env vars remain STOREFULFILLMENT_API_KEY and STOREFULFILLMENT_API_SECRET_KEY.",
+      "fields": [
+        {
+          "name": "apiKey",
+          "sourceSecretId": "/ecomm/sdd/app/api_key"
+        },
+        {
+          "name": "apiSecret",
+          "sourceSecretId": "/ecomm/sdd/app/api_secret"
+        }
+      ]
+    }
+  ],
+  "secrets": []
 }

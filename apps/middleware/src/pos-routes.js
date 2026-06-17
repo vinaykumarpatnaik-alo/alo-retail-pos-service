@@ -85,7 +85,7 @@ function shopFromToken(token) {
   if (!token) return "";
 
   let decoded;
-  const secret = process.env.SHOPIFY_API_SECRET || process.env.SHOPIFY_API_SECRET_KEY;
+  const secret = process.env.SHOPIFY_CLIENT_SECRET;
   if (secret) {
     try {
       decoded = jwt.verify(token, secret);

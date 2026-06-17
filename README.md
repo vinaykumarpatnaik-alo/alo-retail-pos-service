@@ -33,6 +33,8 @@ The frontend loads Shopify App Bridge and Polaris web components from Shopify's 
 
 Shopify app TOML is generated at deploy time from real app IDs. Set `SHOPIFY_APP_ENV` to `dev`, `qa`, or `prod`, set `SHOPIFY_CLIENT_ID` to the matching retail Shopify app client ID, then run `bun run shopify:config`. The generated `shopify.app.generated.toml` is intentionally ignored.
 
+Legacy `SHOPIFY_API_KEY` in `alo-pos-apps` meant the Shopify app client ID, and legacy `SHOPIFY_API_SECRET` meant the Shopify app client secret. In this retail repo, the app client ID is `SHOPIFY_CLIENT_ID`, the app client secret is `SHOPIFY_CLIENT_SECRET`, and `SHOPIFY_API_KEY` is reserved for the optional Shopify Admin API key/token used by inventory lookup. Runtime credential pairs should live in AWS Secrets Manager as JSON secrets, for example `/retail/alo-retail-pos-service/shopify/${env}` with `clientId`, `clientSecret`, and optional `apiKey` attributes. Terraform should create/replicate/grant these secrets and pass `RETAIL_SECRET_ROOT`; the app fetches and caches the grouped JSON secrets at runtime. Non-secret runtime coordinates like `ALO_API_BASE_URL`, `STOREFULFILLMENT_URL`, `GUEST_STATUS_SET_LL`, exclusion list, and timeout values are Terraform-owned Lambda env vars. The app normalizes runtime URLs and derives the copied POS helper endpoints from `ALO_API_BASE_URL` at runtime. For extension deploys, GitHub Actions only needs the Shopify client ID for TOML generation plus the app automation token; the Shopify client secret is not distributed to the extension workflow.
+
 Static Shopify app configs are also present for local/manual use:
 
 - `shopify.app.alo-retail-pos-dev.toml`
