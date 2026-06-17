@@ -1,6 +1,6 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "7e8ffce90bdb1cb538451d4cea754785"
+client_id = "44ce119e26ff5467a36902de80294167"
 name = "Alo Retail POS Dev"
 application_url = "https://api.dev.aloyoga.com/pos/v1/"
 embedded = true
