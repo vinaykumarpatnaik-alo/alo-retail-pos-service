@@ -1,4 +1,4 @@
 type = "backend"
 
 [commands]
-dev = "bun run dev"
+dev = "npm run dev"

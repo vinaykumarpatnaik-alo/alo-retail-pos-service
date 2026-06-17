@@ -1,3 +1,4 @@
+import "@shopify/shopify-api/adapters/node";
 import {ApiVersion, shopifyApi} from "@shopify/shopify-api";
 import {restResources} from "@shopify/shopify-api/rest/admin/2025-07";
 
