@@ -1,7 +1,7 @@
 {
   "local": {
     "aloApiBaseUrl": "https://api.dev.alo.software",
-    "storeFulfillmentUrl": "https://store-fulfillments.qa.alo.technology",
+    "storeFulfillmentUrl": "https://store-fulfillments.dev.alo.technology",
     "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
     "hrisUserSyncBaseUrl": "https://hris.dev.alo.technology",
     "shopifyApiTimeout": "10000",
@@ -10,7 +10,7 @@
   },
   "dev": {
     "aloApiBaseUrl": "https://api.dev.alo.software",
-    "storeFulfillmentUrl": "https://store-fulfillments.qa.alo.technology",
+    "storeFulfillmentUrl": "https://store-fulfillments.dev.alo.technology",
     "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
     "hrisUserSyncBaseUrl": "https://hris.dev.alo.technology",
     "shopifyApiTimeout": "10000",
