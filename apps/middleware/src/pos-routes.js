@@ -1,4 +1,5 @@
 import {DynamoDBClient, GetItemCommand, QueryCommand} from "@aws-sdk/client-dynamodb";
+import {configureMiddlewareRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
 import {Session} from "@shopify/shopify-api";
 import {Elysia} from "elysia";
 import jwt from "jsonwebtoken";
@@ -46,6 +47,8 @@ import {updateGuestStatusWrapper} from "./pos/helpers/update-guest-status-alo.js
 import {EmployeeDirectoryStore} from "./pos/datastore/employee-directory-store.js";
 import {HrisUserSyncClient} from "./pos/helpers/hris-user-sync-client.js";
 import {getHrisRoutingConfig} from "./pos/helpers/hris-routing-config.js";
+
+configureMiddlewareRuntimeConfig();
 
 const region = process.env.AWS_REGION || process.env.REGION || "us-east-1";
 const dynamodb = new DynamoDBClient({region});

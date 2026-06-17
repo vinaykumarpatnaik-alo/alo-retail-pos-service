@@ -6,8 +6,12 @@ on:
       env_name:
         required: true
         type: string
+      account_id:
+        required: true
+        type: string
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -26,9 +30,30 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ inputs.account_id }}:role/gha-alo-retail-pos-service
+          aws-region: us-east-1
+
+      - name: Load Shopify extension deploy config
+        shell: bash
+        run: |
+          SECRET_ID="/retail/alo-retail-pos-service/shopify-extension/${{ inputs.env_name }}"
+          SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "$SECRET_ID" --query SecretString --output text)
+          CLIENT_ID=$(jq -r '.clientId // empty' <<< "$SECRET_JSON")
+          APP_AUTOMATION_TOKEN=$(jq -r '.appAutomationToken // empty' <<< "$SECRET_JSON")
+
+          if [ -z "$CLIENT_ID" ] || [ -z "$APP_AUTOMATION_TOKEN" ]; then
+            echo "Missing clientId or appAutomationToken in $SECRET_ID"
+            exit 1
+          fi
+
+          echo "::add-mask::$APP_AUTOMATION_TOKEN"
+          echo "SHOPIFY_CLIENT_ID=$CLIENT_ID" >> "$GITHUB_ENV"
+          echo "SHOPIFY_APP_AUTOMATION_TOKEN=$APP_AUTOMATION_TOKEN" >> "$GITHUB_ENV"
+
       - name: Deploy extensions
         env:
           SHOPIFY_APP_ENV: ${{ inputs.env_name }}
-          SHOPIFY_CLIENT_ID: ${{ inputs.env_name == 'dev' && secrets.SHOPIFY_RETAIL_POS_DEV_CLIENT_ID || inputs.env_name == 'qa' && secrets.SHOPIFY_RETAIL_POS_QA_CLIENT_ID || secrets.SHOPIFY_RETAIL_POS_PROD_CLIENT_ID }}
-          SHOPIFY_APP_AUTOMATION_TOKEN: ${{ inputs.env_name == 'dev' && secrets.SHOPIFY_RETAIL_POS_DEV_AUTOMATION_TOKEN || inputs.env_name == 'qa' && secrets.SHOPIFY_RETAIL_POS_QA_AUTOMATION_TOKEN || secrets.SHOPIFY_RETAIL_POS_PROD_AUTOMATION_TOKEN }}
         run: bun run deploy

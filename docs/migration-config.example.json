@@ -5,7 +5,7 @@
   "targetRegion": "us-east-1",
   "_notes": [
     "Only tables[], secretObjects[], and secrets[] are active migration inputs.",
-    "tableInventory and notMigratedSecrets are documentation so source names stay visible without being copied."
+    "tableInventory, notMigratedSecrets, and manualSecretObjects are documentation so source names stay visible without being copied."
   ],
   "tableInventory": [
     {
@@ -48,7 +48,7 @@
   "notMigratedSecrets": [
     {
       "sourceSecretId": "/ecomm/shopify/posapp/aloapps/cli_token",
-      "reason": "New extension deploys use GitHub Actions secrets instead of migrating the legacy CLI token."
+      "reason": "Do not migrate the legacy CLI token. New extension deploys read clientId and appAutomationToken from /retail/alo-retail-pos-service/shopify-extension/${env}."
     },
     {
       "sourceSecretId": "/ecomm/shopify/posapp/alo_rewards_api_key",
@@ -61,64 +61,60 @@
   ],
   "secretObjects": [
     {
-      "targetSecretId": "/retail/alo-retail-pos-service/shopify/${env}",
-      "meaning": "Shopify app credential pair. Legacy SHOPIFY_API_KEY is clientId and legacy SHOPIFY_API_SECRET is clientSecret. New runtime env names are SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET.",
+      "targetSecretId": "/retail/alo-retail-pos-service/runtime/${env}",
+      "meaning": "Lambda runtime secret. This composes the POS runtime credential fields into one env-scoped JSON object.",
       "fields": [
         {
-          "name": "clientId",
+          "name": "shopifyClientId",
           "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_apps_api_key"
         },
         {
-          "name": "clientSecret",
+          "name": "shopifyClientSecret",
           "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_apps_secret_key"
-        }
-      ],
-      "manualFields": [
+        },
         {
-          "name": "apiKey",
-          "meaning": "Optional Shopify Admin API key/token used by inventory lookup and hydrated as SHOPIFY_API_KEY; populate manually if the source is not confirmed."
-        }
-      ]
-    },
-    {
-      "targetSecretId": "/retail/alo-retail-pos-service/alo-api/${env}",
-      "meaning": "Alo API credential pair used by signup/customer helper flows. New runtime env names are ALO_API_KEY and ALO_API_SECRET_KEY.",
-      "fields": [
+          "name": "shopifyApiKey",
+          "sourceSecretId": "/ecomm/shopify/app/aws_event_bridge_key"
+        },
         {
-          "name": "apiKey",
+          "name": "aloApiKey",
           "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_api_key"
         },
         {
-          "name": "apiSecret",
+          "name": "aloApiSecretKey",
           "sourceSecretId": "/ecomm/shopify/posapp/aloapps/alo_api_secret"
-        }
-      ]
-    },
-    {
-      "targetSecretId": "/retail/alo-retail-pos-service/loyalty-pos/${env}",
-      "meaning": "LoyaltyLion credential pair. Existing app env vars remain LOYALTYLION_API_TOKEN and LOYALTYLION_API_SECRET.",
-      "fields": [
+        },
         {
-          "name": "apiToken",
+          "name": "loyaltylionApiToken",
           "sourceSecretId": "/ecomm/loyaltylion/wishlist/api_token"
         },
         {
-          "name": "apiSecret",
+          "name": "loyaltylionApiSecret",
           "sourceSecretId": "/ecomm/loyaltylion/wishlist/api_secret"
-        }
-      ]
-    },
-    {
-      "targetSecretId": "/retail/alo-retail-pos-service/store-fulfillment/${env}",
-      "meaning": "Store fulfillment credential pair. Existing app env vars remain STOREFULFILLMENT_API_KEY and STOREFULFILLMENT_API_SECRET_KEY.",
-      "fields": [
+        },
         {
-          "name": "apiKey",
+          "name": "storeFulfillmentApiKey",
           "sourceSecretId": "/ecomm/sdd/app/api_key"
         },
         {
-          "name": "apiSecret",
+          "name": "storeFulfillmentApiSecretKey",
           "sourceSecretId": "/ecomm/sdd/app/api_secret"
+        }
+      ]
+    }
+  ],
+  "manualSecretObjects": [
+    {
+      "targetSecretId": "/retail/alo-retail-pos-service/shopify-extension/${env}",
+      "meaning": "Shopify extension deploy secret. Values are managed for the new retail app and read by GitHub Actions at deploy time.",
+      "fields": [
+        {
+          "name": "clientId",
+          "meaning": "Shopify retail POS app client ID used to render TOML for this environment."
+        },
+        {
+          "name": "appAutomationToken",
+          "meaning": "Shopify app automation token used by Shopify CLI for extension deploys."
         }
       ]
     }

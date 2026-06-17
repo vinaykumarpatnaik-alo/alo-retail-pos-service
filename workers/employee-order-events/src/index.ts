@@ -5,6 +5,7 @@ import {
   type EmployeeOrderEvent,
   type ShopifyOrderPayload,
 } from "@alo-retail-pos-service/pos-domain";
+import {configureWorkerRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
 
 const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-employee-order-events"});
 
@@ -319,6 +320,7 @@ function refundItemsFromOrder(order: ShopifyOrderPayload): Map<string, number> {
 }
 
 async function hrisRequest(path: string, init: RequestInit): Promise<Response> {
+  configureWorkerRuntimeConfig();
   const baseUrl = requiredEnv("HRIS_USER_SYNC_BASE_URL");
   const token = process.env.HRIS_USER_SYNC_TOKEN || process.env.ALO_HRIS_USER_SYNC_TOKEN || "";
   const timeoutMs = Number(process.env.HRIS_USER_SYNC_TIMEOUT_MS || process.env.ALO_HRIS_USER_SYNC_TIMEOUT_MS || 5000);

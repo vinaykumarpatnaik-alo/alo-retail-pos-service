@@ -1,0 +1,38 @@
+{
+  "local": {
+    "aloApiBaseUrl": "https://api.dev.alo.software",
+    "storeFulfillmentUrl": "https://store-fulfillments.qa.alo.technology",
+    "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
+    "hrisUserSyncBaseUrl": "https://hris.dev.alo.technology",
+    "shopifyApiTimeout": "10000",
+    "defaultApiTimeout": "10000",
+    "exclusionProductList": "4493787529250:4593836195874:7487480955054:7401383985326:4493779828770:6349215334574:7487550914734:7389293740206:7389295640750:7841483849902:7635041583278:7635040403630:7584875020462:7543965647022:7543965024430:7487520112814:7389296328878:7389294231726:6349216317614:6080341803182"
+  },
+  "dev": {
+    "aloApiBaseUrl": "https://api.dev.alo.software",
+    "storeFulfillmentUrl": "https://store-fulfillments.qa.alo.technology",
+    "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
+    "hrisUserSyncBaseUrl": "https://hris.dev.alo.technology",
+    "shopifyApiTimeout": "10000",
+    "defaultApiTimeout": "10000",
+    "exclusionProductList": "4493787529250:4593836195874:7487480955054:7401383985326:4493779828770:6349215334574:7487550914734:7389293740206:7389295640750:7841483849902:7635041583278:7635040403630:7584875020462:7543965647022:7543965024430:7487520112814:7389296328878:7389294231726:6349216317614:6080341803182"
+  },
+  "qa": {
+    "aloApiBaseUrl": "https://api.qa.alo.software",
+    "storeFulfillmentUrl": "https://store-fulfillments.qa.alo.technology",
+    "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
+    "hrisUserSyncBaseUrl": "https://hris.qa.alo.technology",
+    "shopifyApiTimeout": "10000",
+    "defaultApiTimeout": "10000",
+    "exclusionProductList": "4493787529250:4593836195874:7487480955054:7401383985326:4493779828770:6349215334574:7487550914734:7389293740206:7389295640750:7841483849902:7635041583278:7635040403630:7584875020462:7543965647022:7543965024430:7487520112814:7389296328878:7389294231726:6349216317614:6080341803182"
+  },
+  "prod": {
+    "aloApiBaseUrl": "https://api.alo.software",
+    "storeFulfillmentUrl": "https://store-fulfillments.alo.technology",
+    "guestStatusSetLl": "https://api.loyaltylion.com/v2/activities",
+    "hrisUserSyncBaseUrl": "https://hris.alo.technology",
+    "shopifyApiTimeout": "10000",
+    "defaultApiTimeout": "10000",
+    "exclusionProductList": "1423704490102:4333898236022:4594759860342:6767829713076:6690171191476:6767829680308:381502259227:7016422408372:7276104253620:7064922947764:7080451866804:7325392896180:4586621468790:4468976943222:6782394040500:4520269578358:6584906154164:7319653548212:7016422932660:4586621468790"
+  }
+}

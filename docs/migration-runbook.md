@@ -66,31 +66,31 @@ Legacy secret inventory from `alo-pos-apps`:
 
 | Legacy secret | Meaning | Legacy env usage | Retail target |
 | --- | --- | --- |
-| `/ecomm/shopify/posapp/aloapps/alo_apps_api_key` | Shopify app client ID | New env `SHOPIFY_CLIENT_ID` | JSON field `clientId` in `/retail/alo-retail-pos-service/shopify/${env}` |
-| `/ecomm/shopify/posapp/aloapps/alo_apps_secret_key` | Shopify app client secret | New env `SHOPIFY_CLIENT_SECRET` | JSON field `clientSecret` in `/retail/alo-retail-pos-service/shopify/${env}` |
-| Inventory Shopify Admin API key/token, if still required | Inventory helper token | `SHOPIFY_API_KEY` | Optional JSON field `apiKey` in `/retail/alo-retail-pos-service/shopify/${env}` after the legacy source is confirmed. |
+| `/ecomm/shopify/posapp/aloapps/alo_apps_api_key` | Shopify app client ID | New env `SHOPIFY_CLIENT_ID` | JSON field `shopifyClientId` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/shopify/posapp/aloapps/alo_apps_secret_key` | Shopify app client secret | New env `SHOPIFY_CLIENT_SECRET` | JSON field `shopifyClientSecret` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/shopify/app/aws_event_bridge_key` | Shopify Admin API key/token used by inventory lookup | `SHOPIFY_API_KEY` | JSON field `shopifyApiKey` in `/retail/alo-retail-pos-service/runtime/${env}` |
 | `/ecomm/shopify/posapp/aloapps/ebf/alo_apps_api_key` | EBF Shopify app client ID | EBF legacy `SHOPIFY_API_KEY` | Use only if migrating an EBF-equivalent env/app. |
 | `/ecomm/shopify/posapp/aloapps/ebf/alo_apps_secret_key` | EBF Shopify app client secret | EBF legacy `SHOPIFY_API_SECRET` | Use only if migrating an EBF-equivalent env/app. |
-| `/ecomm/shopify/posapp/aloapps/cli_token` | Legacy Shopify CLI token | legacy extension deploy `SHOPIFY_CLI_TOKEN` | Not migrated. New extension deploys use GitHub Actions secrets: `SHOPIFY_RETAIL_POS_DEV_AUTOMATION_TOKEN`, `SHOPIFY_RETAIL_POS_QA_AUTOMATION_TOKEN`, and `SHOPIFY_RETAIL_POS_PROD_AUTOMATION_TOKEN`. |
-| `/ecomm/shopify/posapp/aloapps/alo_api_key` | Alo API key | New env `ALO_API_KEY` | JSON field `apiKey` in `/retail/alo-retail-pos-service/alo-api/${env}` |
-| `/ecomm/shopify/posapp/aloapps/alo_api_secret` | Alo API secret | New env `ALO_API_SECRET_KEY` | JSON field `apiSecret` in `/retail/alo-retail-pos-service/alo-api/${env}` |
-| `/ecomm/loyaltylion/wishlist/api_token` | LoyaltyLion API token | `LOYALTYLION_API_TOKEN` | JSON field `apiToken` in `/retail/alo-retail-pos-service/loyalty-pos/${env}` |
-| `/ecomm/loyaltylion/wishlist/api_secret` | LoyaltyLion API secret | `LOYALTYLION_API_SECRET` | JSON field `apiSecret` in `/retail/alo-retail-pos-service/loyalty-pos/${env}` |
-| `/ecomm/sdd/app/api_key` | Store fulfillment API key | `STOREFULFILLMENT_API_KEY` | JSON field `apiKey` in `/retail/alo-retail-pos-service/store-fulfillment/${env}` |
-| `/ecomm/sdd/app/api_secret` | Store fulfillment API secret | `STOREFULFILLMENT_API_SECRET_KEY` | JSON field `apiSecret` in `/retail/alo-retail-pos-service/store-fulfillment/${env}` |
+| `/ecomm/shopify/posapp/aloapps/cli_token` | Legacy Shopify CLI token | legacy extension deploy `SHOPIFY_CLI_TOKEN` | Not migrated. New extension deploys read `clientId` and `appAutomationToken` from `/retail/alo-retail-pos-service/shopify-extension/${env}`. |
+| `/ecomm/shopify/posapp/aloapps/alo_api_key` | Alo API key | New env `ALO_API_KEY` | JSON field `aloApiKey` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/shopify/posapp/aloapps/alo_api_secret` | Alo API secret | New env `ALO_API_SECRET_KEY` | JSON field `aloApiSecretKey` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/loyaltylion/wishlist/api_token` | LoyaltyLion API token | `LOYALTYLION_API_TOKEN` | JSON field `loyaltylionApiToken` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/loyaltylion/wishlist/api_secret` | LoyaltyLion API secret | `LOYALTYLION_API_SECRET` | JSON field `loyaltylionApiSecret` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/sdd/app/api_key` | Store fulfillment API key | `STOREFULFILLMENT_API_KEY` | JSON field `storeFulfillmentApiKey` in `/retail/alo-retail-pos-service/runtime/${env}` |
+| `/ecomm/sdd/app/api_secret` | Store fulfillment API secret | `STOREFULFILLMENT_API_SECRET_KEY` | JSON field `storeFulfillmentApiSecretKey` in `/retail/alo-retail-pos-service/runtime/${env}` |
 
 AWS also contains `/ecomm/shopify/posapp/alo_rewards_api_key`, `/ecomm/shopify/posapp/alo_rewards_secret_key`, and EBF variants under the same prefix. They were not referenced by the current `alo-pos-apps` runtime paths checked for this migration, so include them only if a separately owned rewards flow is confirmed in scope.
 
 Placement rule:
 
-- Runtime values belong in AWS Secrets Manager. Keep each credential pair as one JSON secret: `/retail/alo-retail-pos-service/shopify/${env}`, `/retail/alo-retail-pos-service/alo-api/${env}`, `/retail/alo-retail-pos-service/loyalty-pos/${env}`, and `/retail/alo-retail-pos-service/store-fulfillment/${env}`.
-- Terraform should create/replicate those secret resources, grant the runtime Lambda `secretsmanager:GetSecretValue` on `/retail/${local.repo_name}/*`, and pass `RETAIL_SECRET_ROOT=/retail/${local.repo_name}` plus `ENV`.
-- The app fetches grouped JSON secrets at runtime through Powertools and caches them in the warm Lambda container for `SECRETS_CACHE_TTL_SECONDS` seconds, defaulting to 900.
-- GitHub Actions secrets are only for deploy-time Shopify extension inputs in the current workflow: `SHOPIFY_RETAIL_POS_*_CLIENT_ID` for TOML generation and `SHOPIFY_RETAIL_POS_*_AUTOMATION_TOKEN` for Shopify CLI authentication.
-- The Shopify client secret should not be needed in GitHub Actions for extension deploys.
-- Keeping the client ID in GitHub Actions is acceptable because Shopify CLI needs it to render/deploy the app TOML. If we later want the client ID to live only in AWS Secrets Manager, update the extension deploy workflow to fetch it through AWS OIDC before running `bun run shopify:config`.
+- Runtime credential values belong in one AWS Secrets Manager JSON secret: `/retail/alo-retail-pos-service/runtime/${env}`.
+- Shopify extension deploy values belong in one AWS Secrets Manager JSON secret: `/retail/alo-retail-pos-service/shopify-extension/${env}` with `clientId` and `appAutomationToken`.
+- Terraform should create/replicate both secret resources and exact-scope IAM: runtime Lambda reads only the runtime secret, and GitHub Actions reads only the Shopify extension secret.
+- Terraform should pass `RETAIL_SECRET_ROOT=/retail/${local.repo_name}` plus `ENV`; the app derives `/runtime/${ENV}` under that root.
+- The app fetches the runtime JSON secret through Powertools and caches it in the warm Lambda container for 900 seconds by default. `SECRETS_CACHE_TTL_SECONDS` is an app/local override, not a Terraform-managed env var.
+- GitHub Actions fetches the Shopify extension JSON secret at deploy time through AWS OIDC before running `bun run deploy`.
 
-Application helper wiring does not change. The runtime config loader reads the grouped JSON secret fields and hydrates the env names the copied POS helpers expect.
+Application helper wiring does not change. The runtime config loader reads the runtime JSON secret fields and hydrates the env names the copied POS helpers expect.
 
 Required environment wiring per env:
 
@@ -99,17 +99,13 @@ Required environment wiring per env:
 | `SHOPIFY_SESSION_TABLE_NAME` | `retail-${env}-pos-session-data` |
 | `POS_FEATURE_CONFIGS_TABLE` | `retail-${env}-pos-feature-configs` |
 | `POS_EXCLUSION_LIST_TABLE` | `retail-${env}-pos-exclusion-list` |
-| `RETAIL_SECRET_ROOT` | `/retail/alo-retail-pos-service`; app derives `${RETAIL_SECRET_ROOT}/shopify/${ENV}`, `${RETAIL_SECRET_ROOT}/alo-api/${ENV}`, `${RETAIL_SECRET_ROOT}/loyalty-pos/${ENV}`, and `${RETAIL_SECRET_ROOT}/store-fulfillment/${ENV}`. |
-| `SECRETS_CACHE_TTL_SECONDS` | Optional runtime secret cache TTL. Defaults to `900`. |
-| `ALO_API_BASE_URL` | Non-secret Alo API base URL. Terraform-owned env coordinate; app derives Alo loyalty/birthday helper endpoints from this base. |
-| `STOREFULFILLMENT_URL` | Non-secret store fulfillment base URL. Terraform-owned env coordinate; dev/qa mirror legacy QA, prod mirrors legacy prod. |
-| `GUEST_STATUS_SET_LL` | Non-secret LoyaltyLion activities endpoint. Terraform-owned env coordinate. |
-| `EXCLUSION_PRODUCT_LIST` | Legacy product exclusion list. Terraform-owned env coordinate unless business wants it promoted into `retail-${env}-pos-feature-configs`. |
-| `SHOPIFY_API_TIMEOUT` / `DEFAULT_API_TIMEOUT` | Non-secret timeout config. Terraform-owned env coordinate. |
+| `RETAIL_SECRET_ROOT` | `/retail/alo-retail-pos-service`; app derives `${RETAIL_SECRET_ROOT}/runtime/${ENV}`. |
+
+Non-secret URLs, HRIS base URL, timeouts, and fallback product exclusion lists are app-owned per-environment config in `packages/runtime-config/src/runtime-config.json`. Terraform should not manage those as Lambda env vars. The app selects config with `RUNTIME_CONFIG_ENV`, `ENV`, or `SHOPIFY_APP_ENV`; local development should use `RUNTIME_CONFIG_ENV=local`. The local `.env` file may override individual dependency coordinates with `ALO_API_BASE_URL`, `STOREFULFILLMENT_URL`, `GUEST_STATUS_SET_LL`, `HRIS_USER_SYNC_BASE_URL`, `SHOPIFY_API_TIMEOUT`, `DEFAULT_API_TIMEOUT`, or `EXCLUSION_PRODUCT_LIST` for targeted testing.
 
 ## Failover
 
-- Runtime Lambda, SQS, worker Lambda, and POS-owned DynamoDB table replicas exist in `us-east-1` and `us-west-2`.
+- Runtime Lambda, SQS, worker Lambda, and the three POS-owned DynamoDB table replicas exist in `us-east-1` and `us-west-2`.
 - CloudFront registers both regional API Gateway origins but routes to `local.cdn_active_origin_region` because the shared CDN module does not support CloudFront origin groups.
 - To fail over the app edge, change `cdn_active_origin_region` in Terraform to `local.secondary_region`, apply, and verify `/health` through `pos.*.alo.technology`.
 - Keep DynamoDB global table replication healthy before store cohort expansion. Shopify session, feature config, and exclusion list tables are POS-owned; employee-order history and spend remain HRIS-owned.

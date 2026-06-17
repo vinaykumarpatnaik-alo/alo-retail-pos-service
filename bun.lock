@@ -43,6 +43,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@alo-retail-pos-service/pos-domain": "*",
+        "@alo-retail-pos-service/runtime-config": "*",
         "@alo-retail-pos-service/shopify-auth": "*",
         "@aws-lambda-powertools/logger": "^2.29.0",
         "@aws-lambda-powertools/parameters": "^2.29.0",
@@ -71,6 +72,13 @@
         "typescript": "^5.9.0",
       },
     },
+    "packages/runtime-config": {
+      "name": "@alo-retail-pos-service/runtime-config",
+      "version": "0.1.0",
+      "devDependencies": {
+        "typescript": "^5.9.0",
+      },
+    },
     "packages/shopify-auth": {
       "name": "@alo-retail-pos-service/shopify-auth",
       "version": "0.1.0",
@@ -83,6 +91,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@alo-retail-pos-service/pos-domain": "*",
+        "@alo-retail-pos-service/runtime-config": "*",
         "@aws-lambda-powertools/logger": "^2.29.0",
       },
       "devDependencies": {
@@ -103,6 +112,8 @@
     "@alo-retail-pos-service/middleware": ["@alo-retail-pos-service/middleware@workspace:apps/middleware"],
 
     "@alo-retail-pos-service/pos-domain": ["@alo-retail-pos-service/pos-domain@workspace:packages/pos-domain"],
+
+    "@alo-retail-pos-service/runtime-config": ["@alo-retail-pos-service/runtime-config@workspace:packages/runtime-config"],
 
     "@alo-retail-pos-service/shopify-auth": ["@alo-retail-pos-service/shopify-auth@workspace:packages/shopify-auth"],
 

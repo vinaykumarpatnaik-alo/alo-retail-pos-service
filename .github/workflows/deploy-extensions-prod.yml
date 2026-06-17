@@ -10,6 +10,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
+  id-token: write
   contents: read
 
 jobs:
@@ -19,3 +20,4 @@ jobs:
     secrets: inherit
     with:
       env_name: prod
+      account_id: "418460385342"

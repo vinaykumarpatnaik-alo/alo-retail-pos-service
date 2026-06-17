@@ -10,6 +10,7 @@ import type {APIGatewayProxyEvent, APIGatewayProxyEventV2, APIGatewayProxyResult
 import {
   normalizeEmployeeOrderEvent,
 } from "@alo-retail-pos-service/pos-domain";
+import {configureMiddlewareRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
 // @ts-expect-error copied POS route adapter is JavaScript so helper logic stays out of TypeScript checking.
 import {posRoutes} from "./pos-routes.js";
 
@@ -96,7 +97,7 @@ export const app = new Elysia()
   .onBeforeHandle(async ({path}) => {
     if (path !== "/health") {
       await ensureRuntimeSecrets();
-      configureRuntimeUrls();
+      configureMiddlewareRuntimeConfig();
     }
   })
   .get("/health", () => ({
@@ -181,22 +182,17 @@ async function loadRuntimeSecrets(secretRoot: string): Promise<void> {
     throw new Error("ENV is required when RETAIL_SECRET_ROOT is configured");
   }
 
-  const [shopify, aloApi, loyaltyPos, storeFulfillment] = await Promise.all([
-    readJsonSecret(`${secretRoot}/shopify/${env}`),
-    readJsonSecret(`${secretRoot}/alo-api/${env}`),
-    readJsonSecret(`${secretRoot}/loyalty-pos/${env}`),
-    readJsonSecret(`${secretRoot}/store-fulfillment/${env}`),
-  ]);
+  const runtime = await readJsonSecret(`${secretRoot}/runtime/${env}`);
 
-  setRequiredEnv("SHOPIFY_CLIENT_ID", stringField(shopify, "clientId", "shopify"));
-  setRequiredEnv("SHOPIFY_CLIENT_SECRET", stringField(shopify, "clientSecret", "shopify"));
-  setOptionalEnv("SHOPIFY_API_KEY", optionalStringField(shopify, "apiKey"));
-  setRequiredEnv("ALO_API_KEY", stringField(aloApi, "apiKey", "alo-api"));
-  setRequiredEnv("ALO_API_SECRET_KEY", stringField(aloApi, "apiSecret", "alo-api"));
-  setRequiredEnv("LOYALTYLION_API_TOKEN", stringField(loyaltyPos, "apiToken", "loyalty-pos"));
-  setRequiredEnv("LOYALTYLION_API_SECRET", stringField(loyaltyPos, "apiSecret", "loyalty-pos"));
-  setRequiredEnv("STOREFULFILLMENT_API_KEY", stringField(storeFulfillment, "apiKey", "store-fulfillment"));
-  setRequiredEnv("STOREFULFILLMENT_API_SECRET_KEY", stringField(storeFulfillment, "apiSecret", "store-fulfillment"));
+  setRequiredEnv("SHOPIFY_CLIENT_ID", stringField(runtime, "shopifyClientId", "runtime"));
+  setRequiredEnv("SHOPIFY_CLIENT_SECRET", stringField(runtime, "shopifyClientSecret", "runtime"));
+  setOptionalEnv("SHOPIFY_API_KEY", optionalStringField(runtime, "shopifyApiKey"));
+  setRequiredEnv("ALO_API_KEY", stringField(runtime, "aloApiKey", "runtime"));
+  setRequiredEnv("ALO_API_SECRET_KEY", stringField(runtime, "aloApiSecretKey", "runtime"));
+  setRequiredEnv("LOYALTYLION_API_TOKEN", stringField(runtime, "loyaltylionApiToken", "runtime"));
+  setRequiredEnv("LOYALTYLION_API_SECRET", stringField(runtime, "loyaltylionApiSecret", "runtime"));
+  setRequiredEnv("STOREFULFILLMENT_API_KEY", stringField(runtime, "storeFulfillmentApiKey", "runtime"));
+  setRequiredEnv("STOREFULFILLMENT_API_SECRET_KEY", stringField(runtime, "storeFulfillmentApiSecretKey", "runtime"));
 }
 
 async function readJsonSecret(secretId: string): Promise<Record<string, unknown>> {
@@ -229,31 +225,6 @@ function optionalStringField(secret: Record<string, unknown>, field: string): st
 
 function setOptionalEnv(name: string, value: string | undefined): void {
   if (value) process.env[name] = value;
-}
-
-function configureRuntimeUrls(): void {
-  const aloApiBaseUrl = normalizedUrl(process.env.ALO_API_BASE_URL);
-  if (aloApiBaseUrl) {
-    setRuntimeEnv("ALO_SET_GUEST_STATUS", `${aloApiBaseUrl}/v1/loyalty/activities`);
-    setRuntimeEnv("BIRTHDATE_UPDATE_END_POINT", `${aloApiBaseUrl}/v1/account/birthday`);
-    setRuntimeEnv("BLOCKED_CUSTOMER_END_POINT", `${aloApiBaseUrl}/v1/loyalty/blocked`);
-    setRuntimeEnv("GIFTS_ENDPOINT", `${aloApiBaseUrl}/v1/loyalty/gifts`);
-    setRuntimeEnv("LLREWARDS_END_POINT", `${aloApiBaseUrl}/v1/loyalty/rewards`);
-  }
-
-  const storeFulfillmentUrl = normalizedUrl(process.env.STOREFULFILLMENT_URL);
-  if (storeFulfillmentUrl) setRuntimeEnv("STOREFULFILLMENT_URL", storeFulfillmentUrl);
-
-  const loyaltyLionGuestStatusUrl = normalizedUrl(process.env.GUEST_STATUS_SET_LL) || "https://api.loyaltylion.com/v2/activities";
-  setRuntimeEnv("GUEST_STATUS_SET_LL", loyaltyLionGuestStatusUrl);
-}
-
-function setRuntimeEnv(name: string, value: string): void {
-  process.env[name] = value;
-}
-
-function normalizedUrl(value: string | undefined): string {
-  return value?.trim().replace(/\/+$/, "") ?? "";
 }
 
 function normalizedSecretRoot(): string {
