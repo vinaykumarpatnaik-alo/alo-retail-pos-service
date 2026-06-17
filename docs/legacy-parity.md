@@ -4,11 +4,15 @@ This repo is a retail POS replacement, not a copy of every ecomm/EDP responsibil
 
 ## Migrated From `alo-pos-apps`
 
-| Legacy table | Retail table | Purpose |
-| --- | --- | --- |
-| `alo_pos_apps_session_data` | `retail-${env}-pos-session-data` | Shopify app session storage with `shop-index` GSI. |
-| `pos_alo_access_feature_configs` | `retail-${env}-pos-feature-configs` | POS feature/config flags. |
-| `pos_alo_access_exclusion_list` | `retail-${env}-pos-exclusion-list` | Temporary collection/product exclusion lists with TTL. |
+| Legacy table | Retail table | Purpose | TTL |
+| --- | --- | --- | --- |
+| `alo_pos_apps_session_data` | `retail-${env}-pos-session-data` | Shopify app session storage with `id` PK and `shop-index` GSI on `shop`. | Disabled |
+| `pos_alo_access_feature_configs` | `retail-${env}-pos-feature-configs` | POS feature/config flags. | Disabled |
+| `pos_alo_access_exclusion_list` | `retail-${env}-pos-exclusion-list` | Temporary collection/product exclusion lists. | Enabled on `ttl` |
+
+`pos_signup_customer_session_data` and `pos_alo_access_session_data` are not separate retail tables. The new service runs Add Signup Customer and Alo Access under the unified retail POS app boundary and uses `retail-${env}-pos-session-data` for Shopify app sessions.
+
+Offline Shopify sessions should not be expired with DynamoDB TTL. If the retail app has a different Shopify `client_id` from the legacy app, stores must authorize/install the retail app to generate valid new offline sessions in the retail table.
 
 The old SAM app used broad `DynamoDBCrudPolicy: "*"`; the retail role scopes IAM to the POS-owned tables and SQS queue.
 
@@ -26,7 +30,7 @@ The old SAM app used broad `DynamoDBCrudPolicy: "*"`; the retail role scopes IAM
 | Legacy table/source | Retail decision |
 | --- | --- |
 | `edp_shopify_order_updates` | Not migrated. The full Shopify order processor stays in ecomm until separately retired. |
-| Shopify partner EventBridge bus processing | Not migrated into this service. Employee-order discount events enter through POS middleware/SQS only. |
+| Full Shopify partner EventBridge bus processing | Not migrated as a generic order processor. Retail POS consumes only the POS employee-order event subset through platform/ecommerce forwarding, retail EventBridge rules, SQS, and the worker. |
 | Order processor DLQ replay Lambda | Not migrated. New service uses regional SQS DLQs for employee-order event ingestion only. |
 
 ## Cutover Check
@@ -34,7 +38,8 @@ The old SAM app used broad `DynamoDBCrudPolicy: "*"`; the retail role scopes IAM
 Before moving a store cohort, verify:
 
 1. Shopify sessions create/read in `retail-${env}-pos-session-data`.
-2. Feature flags are backfilled in `retail-${env}-pos-feature-configs`.
-3. Exclusion list writes/readbacks work in `retail-${env}-pos-exclusion-list`.
-4. Employee purchase/return/exchange/adjust/cancel events flow through EventBridge/SQS and update the HRIS employee-order API.
-5. HRIS user-sync returns the employee records needed by employee discount flows.
+2. `retail-${env}-pos-session-data` has no DynamoDB TTL configured and has a working `shop-index` GSI.
+3. Feature flags are backfilled in `retail-${env}-pos-feature-configs`.
+4. Exclusion list writes/readbacks work in `retail-${env}-pos-exclusion-list`, with `ttl` enabled only on that table.
+5. Employee purchase/return/exchange/adjust/cancel events flow through EventBridge/SQS and update the HRIS employee-order API.
+6. HRIS user-sync returns the employee records needed by employee discount flows.
