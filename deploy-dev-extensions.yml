@@ -1,16 +1,10 @@
-name: Deploy Extensions QA
+name: Deploy Dev Extensions
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "main*"
-      - "QA*"
-    paths:
-      - "extensions/**"
 
 concurrency:
-  group: deploy-extensions-qa
+  group: deploy-dev-extensions-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -18,9 +12,10 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  deploy-extensions:
+    name: Deploy Dev Extensions
     uses: ./.github/workflows/reusable-deploy-extensions.yml
     secrets: inherit
     with:
-      env_name: qa
-      account_id: "058264160686"
+      env_name: dev
+      account_id: "891377288714"

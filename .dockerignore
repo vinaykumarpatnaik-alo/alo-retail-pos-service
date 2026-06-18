@@ -1,0 +1,15 @@
+.git
+.github
+dist
+**/dist
+node_modules
+**/node_modules
+coverage
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+.shopify
+*.tsbuildinfo
+shopify.app.generated.toml
