@@ -1,0 +1,52 @@
+name: Deploy Dev API
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Docker image tag. Defaults to the workflow commit SHA.
+        required: false
+        type: string
+      deploy_live:
+        description: Deploy the built image to the live Lambda alias.
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-dev-api-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-api:
+    name: Deploy API (${{ matrix.region }})
+    strategy:
+      fail-fast: false
+      matrix:
+        region:
+          - us-east-1
+          - us-west-2
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      account_id: "891377288714"
+      region: ${{ matrix.region }}
+      aws_github_action_role_name: gha-alo-retail-pos-service
+      app_name: retail-dev-pos
+      ecr_repo_name: retail-dev-pos
+      codedeploy_name: retail-dev-pos
+      lambda_alias: live
+      image_tag: ${{ inputs.image_tag || github.sha }}
+      deploy_live: ${{ inputs.deploy_live }}
+      build_target: runtime-lambda
+      docker_cache_scope: retail-dev-pos-api-${{ matrix.region }}
+      build_args: |
+        APP_NAME=pos
+        ENV=dev
+        REGION=${{ matrix.region }}
+    secrets:
+      new_relic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
+      new_relic_api_key: ${{ secrets.NEW_RELIC_API_KEY }}

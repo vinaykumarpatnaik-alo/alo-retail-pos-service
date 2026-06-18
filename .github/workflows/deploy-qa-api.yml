@@ -1,0 +1,66 @@
+name: Deploy QA API
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Docker image tag. Defaults to the workflow commit SHA.
+        required: false
+        type: string
+      deploy_live:
+        description: Deploy the built image to the live Lambda alias.
+        required: false
+        default: true
+        type: boolean
+  push:
+    branches:
+      - "main*"
+      - "QA*"
+    paths:
+      - ".github/workflows/deploy-qa-api.yml"
+      - ".github/workflows/reusable-deploy.yml"
+      - "apps/frontend/**"
+      - "apps/middleware/**"
+      - "packages/**"
+      - "Dockerfile"
+      - "package.json"
+      - "bun.lock"
+      - "tsconfig.base.json"
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-qa-api-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-api:
+    name: Deploy API (${{ matrix.region }})
+    strategy:
+      fail-fast: false
+      matrix:
+        region:
+          - us-east-1
+          - us-west-2
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      account_id: "058264160686"
+      region: ${{ matrix.region }}
+      aws_github_action_role_name: gha-alo-retail-pos-service
+      app_name: retail-qa-pos
+      ecr_repo_name: retail-qa-pos
+      codedeploy_name: retail-qa-pos
+      lambda_alias: live
+      image_tag: ${{ inputs.image_tag || github.sha }}
+      deploy_live: ${{ inputs.deploy_live }}
+      build_target: runtime-lambda
+      docker_cache_scope: retail-qa-pos-api-${{ matrix.region }}
+      build_args: |
+        APP_NAME=pos
+        ENV=qa
+        REGION=${{ matrix.region }}
+    secrets:
+      new_relic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
+      new_relic_api_key: ${{ secrets.NEW_RELIC_API_KEY }}

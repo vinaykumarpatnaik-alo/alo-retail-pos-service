@@ -36,13 +36,18 @@ jobs:
           role-to-assume: arn:aws:iam::${{ inputs.account_id }}:role/gha-alo-retail-pos-service
           aws-region: us-east-1
 
-      - name: Load Shopify extension deploy config
+      - name: Load Shopify extension deploy secret
+        uses: aws-actions/aws-secretsmanager-get-secrets@v3
+        with:
+          secret-ids: |
+            SHOPIFY_EXTENSION_DEPLOY_SECRET,/retail/alo-retail-pos-service/shopify-extension
+
+      - name: Export Shopify extension deploy config
         shell: bash
         run: |
           SECRET_ID="/retail/alo-retail-pos-service/shopify-extension"
-          SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "$SECRET_ID" --query SecretString --output text)
-          CLIENT_ID=$(jq -r '.clientId // empty' <<< "$SECRET_JSON")
-          APP_AUTOMATION_TOKEN=$(jq -r '.appAutomationToken // empty' <<< "$SECRET_JSON")
+          CLIENT_ID=$(jq -r '.clientId // empty' <<< "$SHOPIFY_EXTENSION_DEPLOY_SECRET")
+          APP_AUTOMATION_TOKEN=$(jq -r '.appAutomationToken // empty' <<< "$SHOPIFY_EXTENSION_DEPLOY_SECRET")
 
           if [ -z "$CLIENT_ID" ] || [ -z "$APP_AUTOMATION_TOKEN" ]; then
             echo "Missing clientId or appAutomationToken in $SECRET_ID"

@@ -1,0 +1,45 @@
+name: Deploy Prod Worker
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-prod-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy-worker:
+    if: ${{ startsWith(github.event.release.tag_name, 'pos-worker/') || startsWith(github.event.release.tag_name, 'pos-full/') }}
+    name: Deploy Worker (${{ matrix.region }})
+    strategy:
+      fail-fast: false
+      matrix:
+        region:
+          - us-east-1
+          - us-west-2
+    uses: ./.github/workflows/reusable-deploy.yml
+    with:
+      account_id: "418460385342"
+      region: ${{ matrix.region }}
+      aws_github_action_role_name: gha-alo-retail-pos-service
+      app_name: retail-prod-pos-employee-order-events
+      ecr_repo_name: retail-prod-pos-employee-order-events
+      codedeploy_name: retail-prod-pos-employee-order-events
+      lambda_alias: live
+      image_tag: ${{ github.event.release.tag_name }}
+      deploy_live: true
+      build_target: employee-order-events-worker-lambda
+      docker_cache_scope: retail-prod-pos-worker-${{ matrix.region }}
+      build_args: |
+        APP_NAME=pos-worker
+        ENV=prod
+        REGION=${{ matrix.region }}
+    secrets:
+      new_relic_license_key: ${{ secrets.NEW_RELIC_LICENSE_KEY }}
+      new_relic_api_key: ${{ secrets.NEW_RELIC_API_KEY }}
