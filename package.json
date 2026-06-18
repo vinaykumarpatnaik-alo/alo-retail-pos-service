@@ -3,16 +3,15 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*",
-    "workers/*"
+    "packages/*"
   ],
   "scripts": {
-    "build": "bun run --cwd apps/frontend build && bun run --cwd apps/middleware build && bun run --cwd workers/employee-order-events build",
+    "build": "bun run --cwd apps/frontend build && bun run --cwd apps/api build && bun run --cwd apps/worker build",
     "dev": "shopify app dev",
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "bun run shopify:config && shopify app deploy --config generated --allow-updates",
-    "typecheck": "bun run --cwd apps/frontend typecheck && bun run --cwd apps/middleware typecheck && bun run --cwd packages/pos-domain typecheck && bun run --cwd packages/runtime-config typecheck && bun run --cwd packages/shopify-auth typecheck && bun run --cwd workers/employee-order-events typecheck",
+    "typecheck": "bun run --cwd apps/frontend typecheck && bun run --cwd apps/api typecheck && bun run --cwd apps/worker typecheck && bun run --cwd packages/pos-domain typecheck && bun run --cwd packages/runtime-config typecheck && bun run --cwd packages/shopify-auth typecheck",
     "test": "bun test",
     "shopify": "shopify",
     "shopify:config": "bun scripts/render-shopify-config.mjs",

@@ -15,7 +15,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(dirname, "../public");
 const indexHtmlPath = path.resolve(publicDir, "index.html");
 const port = Number(process.env.PORT ?? "8080");
-const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-middleware"});
+const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-api"});
 const secretsCacheTtlMs = Number(process.env.SECRETS_CACHE_TTL_SECONDS ?? "900") * 1000;
 let runtimeSecretsExpiresAt = 0;
 let runtimeSecretsPromise: Promise<void> | undefined;
@@ -42,7 +42,7 @@ function unversionedPosResponse(set: {status?: number | string}) {
 export const app = new Elysia()
   .onError(({error, set}) => {
     const message = error instanceof Error ? error.message : String(error);
-    logger.error("middleware request failed", error as Error);
+    logger.error("api request failed", error as Error);
     if (!set.status || set.status === 200) {
       set.status = 500;
     }
@@ -75,7 +75,7 @@ export async function lambdaHandler(event: APIGatewayProxyEvent | APIGatewayProx
 
 if (!process.env.AWS_LAMBDA_RUNTIME_API && !process.env.AWS_LAMBDA_FUNCTION_NAME) {
   app.listen(port);
-  logger.info("alo-retail-pos-service middleware listening", {port});
+  logger.info("alo-retail-pos-service api listening", {port});
 }
 
 async function serveStaticOrIndex({request}: {request: Request}): Promise<Response> {

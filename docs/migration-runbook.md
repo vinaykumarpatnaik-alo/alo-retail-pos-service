@@ -21,7 +21,7 @@
 
 1. Shopify Events Ingress forwards Shopify `orders/paid` and `orders/updated` events from all required Shopify instances to the retail EventBridge bus. If the platform ingress path does not contain every required instance, mirror the existing ecommerce routing pattern for the missing instances until platform forwarding is complete.
 2. Retail POS EventBridge rules send matching events to regional employee-order SQS queues.
-3. `workers/employee-order-events` consumes batches from regional SQS.
+3. `apps/worker` consumes batches from regional SQS.
 4. Worker computes the same employee-order snapshot as the legacy order processor from discount codes, `Employee_Email_ID`, refunds, fulfillments, line item discount allocations, and HRIS employee/config lookups.
 5. Worker calls HRIS `PUT /employee-orders`, refreshes the employee order summary, and updates HRIS employee spend/suspension through `PATCH /employees/{employee_id}/spend`.
 6. Failed messages retry and then land in the regional DLQ.

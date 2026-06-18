@@ -1,5 +1,5 @@
 {
-  "name": "@alo-retail-pos-service/middleware",
+  "name": "@alo-retail-pos-service/api",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -22,8 +22,7 @@
     "@shopify/shopify-api": "^12.3.0",
     "axios": "^1.6.0",
     "dotenv": "^16.4.7",
-    "elysia": "^1.4.0"
-    ,
+    "elysia": "^1.4.0",
     "jsonwebtoken": "^9.0.1",
     "node-fetch": "^3.3.0"
   },

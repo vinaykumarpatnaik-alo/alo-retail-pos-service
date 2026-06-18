@@ -1,5 +1,5 @@
 {
-  "name": "@alo-retail-pos-service/employee-order-events",
+  "name": "@alo-retail-pos-service/worker",
   "private": true,
   "version": "0.1.0",
   "type": "module",

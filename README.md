@@ -1,15 +1,15 @@
 # Alo Retail POS Service
 
-Retail-owned POS application, middleware, Shopify POS extensions, and employee-event workers for the phased migration off the ecomm-owned POS stack.
+Retail-owned POS application, API, Shopify POS extensions, and employee-event worker for the phased migration off the ecomm-owned POS stack.
 
 ## Structure
 
 - `apps/frontend`: Preact + Polaris web components app surface.
-- `apps/middleware`: Node.js Lambda + Elysia runtime for health checks, runtime config, Shopify helper APIs, and async event submission.
+- `apps/api`: Node.js Lambda + Elysia runtime for health checks, runtime config, and Shopify helper APIs.
 - `extensions/*`: Shopify POS extension surfaces migrated from `alo-pos-apps`.
-- `workers/employee-order-events`: SQS consumer that ports the relevant legacy order-processor logic and updates HRIS employee-order/spend APIs.
+- `apps/worker`: SQS consumer that ports the relevant legacy order-processor logic and updates HRIS employee-order/spend APIs.
 - `packages/pos-domain`: shared event contracts, store cohort logic, and runtime host helpers.
-- `packages/runtime-config`: app-owned `local`/`dev`/`qa`/`prod` non-secret runtime config shared by middleware and workers.
+- `packages/runtime-config`: app-owned `local`/`dev`/`qa`/`prod` non-secret runtime config shared by API and worker.
 - `packages/shopify-auth`: shared Shopify app/session helpers.
 - `infra/README.md`: points to the central Terraform role in `alo-terraform`.
 
@@ -28,7 +28,7 @@ bun install
 bun run dev
 ```
 
-The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Use `bun run dev` for the Shopify app preview flow; keep that process running so Shopify CLI can hot reload extension changes and show POS extension preview/QR output the same way as `alo-pos-apps`. Shopify CLI starts the frontend and middleware through their `shopify.web.toml` files. Bun remains the install/build/test/deploy toolchain. The deployed middleware and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
+The frontend loads Shopify App Bridge and Polaris web components from Shopify's CDN. Use `bun run dev` for the Shopify app preview flow; keep that process running so Shopify CLI can hot reload extension changes and show POS extension preview/QR output the same way as `alo-pos-apps`. Shopify CLI starts the frontend and API through their `shopify.web.toml` files. Bun remains the install/build/test/deploy toolchain. The deployed API and worker images run on the AWS Node.js Lambda runtime. Shopify `orders/paid` and `orders/updated` events are routed through EventBridge and SQS to the employee-order worker; `/pos/v1/employee-orders/{email_id}` and `/pos/v1/employee-orders/{email_id}/{order_id}` proxy the HRIS order-processor-compatible read contract.
 
 ## Shopify App Config
 
@@ -48,7 +48,7 @@ Static Shopify app configs are also present for local/manual use:
 - `shopify.app.alo-retail-pos-qa.toml`
 - `shopify.app.alo-retail-pos-prod.toml`
 
-Runtime Lambda deploys are split by target so API and worker can release independently. Dev uses manual workflows: `deploy-dev-api.yml` and `deploy-dev-worker.yml`. QA can run manually or from `main*` / `QA*` branches when matching runtime paths change. Prod uses release tags: `pos-api/vX.Y.Z` deploys only `retail-prod-pos`, `pos-worker/vX.Y.Z` deploys only `retail-prod-pos-employee-order-events`, and `pos-full/vX.Y.Z` deploys both runtime images.
+Runtime Lambda deploys are split by target so API and worker can release independently. Dev uses manual workflows: `deploy-dev-api.yml` and `deploy-dev-worker.yml`. QA can run manually or from `main*` / `QA*` branches when matching runtime paths change. Prod uses release tags: `pos-api/vX.Y.Z` deploys only `retail-prod-pos`, `pos-worker/vX.Y.Z` deploys only `retail-prod-pos-employee-order-events`, and `pos-full/vX.Y.Z` deploys both runtime images. The runtime workflows follow the sample POS app deploy convention with Docker targets named `api` and `worker`.
 
 Extension deploys use one workflow per environment: `.github/workflows/deploy-extensions-dev.yml`, `.github/workflows/deploy-extensions-qa.yml`, and `.github/workflows/deploy-extensions-prod.yml`. Dev extension deploys run manually or from `release*` / `Release*` branches when `extensions/**` changes. QA extension deploys run manually or from `main*` / `QA*` branches when `extensions/**` changes. Prod extension deploys run from published `pos-extensions/vX.Y.Z` releases, or from `pos-full/vX.Y.Z` releases when runtime and extensions should deploy together. Each workflow fetches `/retail/alo-retail-pos-service/shopify-extension` from the target AWS account with `aws-actions/aws-secretsmanager-get-secrets` and calls `bun run deploy` with `clientId` and `appAutomationToken` from that JSON secret.
 

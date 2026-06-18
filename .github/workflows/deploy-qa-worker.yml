@@ -20,7 +20,7 @@ on:
       - ".github/workflows/deploy-qa-worker.yml"
       - ".github/workflows/reusable-deploy.yml"
       - "packages/**"
-      - "workers/**"
+      - "apps/worker/**"
       - "Dockerfile"
       - "package.json"
       - "bun.lock"
@@ -50,11 +50,11 @@ jobs:
       aws_github_action_role_name: gha-alo-retail-pos-service
       app_name: retail-qa-pos-employee-order-events
       ecr_repo_name: retail-qa-pos-employee-order-events
-      codedeploy_name: retail-qa-pos-employee-order-events
+      codedeploy_name: retail-qa-pos-employee-order-events-codedeploy
       lambda_alias: live
       image_tag: ${{ inputs.image_tag || github.sha }}
       deploy_live: ${{ inputs.deploy_live }}
-      build_target: employee-order-events-worker-lambda
+      build_target: worker
       docker_cache_scope: retail-qa-pos-worker-${{ matrix.region }}
       build_args: |
         APP_NAME=pos-worker

@@ -30,11 +30,11 @@ jobs:
       aws_github_action_role_name: gha-alo-retail-pos-service
       app_name: retail-prod-pos
       ecr_repo_name: retail-prod-pos
-      codedeploy_name: retail-prod-pos
+      codedeploy_name: retail-prod-pos-codedeploy
       lambda_alias: live
       image_tag: ${{ github.event.release.tag_name }}
       deploy_live: true
-      build_target: runtime-lambda
+      build_target: api
       docker_cache_scope: retail-prod-pos-api-${{ matrix.region }}
       build_args: |
         APP_NAME=pos
