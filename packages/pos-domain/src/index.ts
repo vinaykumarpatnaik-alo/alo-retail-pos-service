@@ -155,7 +155,3 @@ function stringOrDefault(value: unknown, fallback: string | undefined): string {
   if (!normalized) throw new Error("eventId and occurredAt defaults are required when missing from payload");
   return normalized;
 }
-
-export function employeeOrderEventsEndpoint(): string {
-  return "/pos/v1/events/employee-order";
-}

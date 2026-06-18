@@ -48,7 +48,7 @@
   "notMigratedSecrets": [
     {
       "sourceSecretId": "/ecomm/shopify/posapp/aloapps/cli_token",
-      "reason": "Do not migrate the legacy CLI token. New extension deploys read clientId and appAutomationToken from /retail/alo-retail-pos-service/shopify-extension/${env}."
+      "reason": "Do not migrate the legacy CLI token. New extension deploys read clientId and appAutomationToken from /retail/alo-retail-pos-service/shopify-extension."
     },
     {
       "sourceSecretId": "/ecomm/shopify/posapp/alo_rewards_api_key",
@@ -61,8 +61,8 @@
   ],
   "secretObjects": [
     {
-      "targetSecretId": "/retail/alo-retail-pos-service/runtime/${env}",
-      "meaning": "Lambda runtime secret. This composes the POS runtime credential fields into one env-scoped JSON object.",
+      "targetSecretId": "/retail/alo-retail-pos-service/runtime",
+      "meaning": "Lambda runtime secret. This composes the POS runtime credential fields into one static-name JSON object per environment/account.",
       "fields": [
         {
           "name": "shopifyClientId",
@@ -105,7 +105,7 @@
   ],
   "manualSecretObjects": [
     {
-      "targetSecretId": "/retail/alo-retail-pos-service/shopify-extension/${env}",
+      "targetSecretId": "/retail/alo-retail-pos-service/shopify-extension",
       "meaning": "Shopify extension deploy secret. Values are managed for the new retail app and read by GitHub Actions at deploy time.",
       "fields": [
         {

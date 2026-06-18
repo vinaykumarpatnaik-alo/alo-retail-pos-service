@@ -2,7 +2,10 @@ import { DynamoDBClient, GetItemCommand, ScanCommand} from "@aws-sdk/client-dyna
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import util from "util";
 class DynamoPosAloAccessFeatureConfig {
-    constructor(tableName = process.env.POS_FEATURE_CONFIGS_TABLE || "pos_alo_access_feature_configs", options = { region: process.env.AWS_REGION || "us-east-1" }) {
+    constructor(tableName = process.env.FEATURE_CONFIGS_TABLE_NAME, options = { region: process.env.AWS_REGION || "us-east-1" }) {
+        if (!tableName) {
+            throw new Error("FEATURE_CONFIGS_TABLE_NAME is required");
+        }
         this.tableName = tableName;
         this.client = new DynamoDBClient(options);
     }

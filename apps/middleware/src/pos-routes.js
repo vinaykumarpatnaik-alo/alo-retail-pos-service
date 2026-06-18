@@ -109,9 +109,9 @@ function shopFromToken(token) {
 }
 
 async function loadSessionForShop(shop) {
-  const tableName = process.env.SHOPIFY_SESSION_TABLE_NAME;
+  const tableName = process.env.SESSION_DATA_TABLE_NAME;
   if (!tableName) {
-    throw new Error("SHOPIFY_SESSION_TABLE_NAME is required");
+    throw new Error("SESSION_DATA_TABLE_NAME is required");
   }
 
   const fromShopIndex = await dynamodb.send(

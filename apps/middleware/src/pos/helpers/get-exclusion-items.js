@@ -53,7 +53,10 @@ export default async function getExclusionItems(session) {
   let env = "production";
   try {
     if(env === "production"){
-      const EXCLUSION_STORAGE = new DynamoDBExclusionStorage(process.env.POS_EXCLUSION_LIST_TABLE || "pos_alo_access_exclusion_list", process.env.AWS_REGION);
+      if (!process.env.EXCLUSION_LIST_TABLE_NAME) {
+        throw new Error("EXCLUSION_LIST_TABLE_NAME is required");
+      }
+      const EXCLUSION_STORAGE = new DynamoDBExclusionStorage(process.env.EXCLUSION_LIST_TABLE_NAME, process.env.AWS_REGION);
       const collectionId = "point-restrictions";
       productIds = await EXCLUSION_STORAGE.loadExclusionList(collectionId);
       console.log(">===========  Product ids from DB ============<");

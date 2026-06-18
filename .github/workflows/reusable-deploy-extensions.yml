@@ -39,7 +39,7 @@ jobs:
       - name: Load Shopify extension deploy config
         shell: bash
         run: |
-          SECRET_ID="/retail/alo-retail-pos-service/shopify-extension/${{ inputs.env_name }}"
+          SECRET_ID="/retail/alo-retail-pos-service/shopify-extension"
           SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id "$SECRET_ID" --query SecretString --output text)
           CLIENT_ID=$(jq -r '.clientId // empty' <<< "$SECRET_JSON")
           APP_AUTOMATION_TOKEN=$(jq -r '.appAutomationToken // empty' <<< "$SECRET_JSON")

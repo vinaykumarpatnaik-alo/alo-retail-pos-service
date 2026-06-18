@@ -1,25 +1,20 @@
-import {randomUUID} from "node:crypto";
 import {promises as fs} from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import {Logger} from "@aws-lambda-powertools/logger";
 import {getSecret} from "@aws-lambda-powertools/parameters/secrets";
-import {SendMessageCommand, SQSClient} from "@aws-sdk/client-sqs";
 import {Elysia} from "elysia";
 import type {APIGatewayProxyEvent, APIGatewayProxyEventV2, APIGatewayProxyResult, Context} from "aws-lambda";
-import {
-  normalizeEmployeeOrderEvent,
-} from "@alo-retail-pos-service/pos-domain";
 import {configureMiddlewareRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
 // @ts-expect-error copied POS route adapter is JavaScript so helper logic stays out of TypeScript checking.
 import {posRoutes} from "./pos-routes.js";
+
+configureMiddlewareRuntimeConfig();
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(dirname, "../public");
 const indexHtmlPath = path.resolve(publicDir, "index.html");
 const port = Number(process.env.PORT ?? "8080");
-const queueRegion = process.env.EMPLOYEE_ORDER_EVENTS_QUEUE_REGION ?? process.env.AWS_REGION ?? process.env.REGION ?? "us-east-1";
-const sqs = new SQSClient({region: queueRegion});
 const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-middleware"});
 const secretsCacheTtlMs = Number(process.env.SECRETS_CACHE_TTL_SECONDS ?? "900") * 1000;
 let runtimeSecretsExpiresAt = 0;
@@ -28,14 +23,13 @@ let runtimeSecretsPromise: Promise<void> | undefined;
 function runtimePayload() {
   return {
     appUrl: process.env.APP_URL,
-    employeeOrderEventsEnabled: Boolean(process.env.EMPLOYEE_ORDER_EVENTS_QUEUE_URL),
-    employeeOrderEventsQueueRegion: queueRegion,
+    employeeOrderEventsSource: "eventbridge-worker",
     hrisUserSyncBaseUrl: process.env.HRIS_USER_SYNC_BASE_URL,
     shopifyClientIdConfigured: Boolean(process.env.SHOPIFY_CLIENT_ID),
     posTables: {
-      session: process.env.SHOPIFY_SESSION_TABLE_NAME,
-      featureConfigs: process.env.POS_FEATURE_CONFIGS_TABLE,
-      exclusionList: process.env.POS_EXCLUSION_LIST_TABLE,
+      session: process.env.SESSION_DATA_TABLE_NAME,
+      featureConfigs: process.env.FEATURE_CONFIGS_TABLE_NAME,
+      exclusionList: process.env.EXCLUSION_LIST_TABLE_NAME,
     },
   };
 }
@@ -43,46 +37,6 @@ function runtimePayload() {
 function unversionedPosResponse(set: {status?: number | string}) {
   set.status = 404;
   return {ok: false, error: "versioned_pos_api_required"};
-}
-
-async function enqueueEmployeeOrderEvent(body: unknown, set: {status?: number | string}) {
-  const queueUrl = process.env.EMPLOYEE_ORDER_EVENTS_QUEUE_URL;
-  if (!queueUrl) {
-    set.status = 503;
-    return {ok: false, error: "employee_order_events_queue_not_configured"};
-  }
-
-  try {
-    const event = normalizeEmployeeOrderEvent(body, {
-      eventId: randomUUID(),
-      occurredAt: new Date().toISOString(),
-      source: "middleware",
-    });
-    await sqs.send(
-      new SendMessageCommand({
-        QueueUrl: queueUrl,
-        MessageBody: JSON.stringify(event),
-        MessageAttributes: {
-          topic: {DataType: "String", StringValue: event.topic},
-          shopDomain: {DataType: "String", StringValue: event.shopDomain ?? "unknown"},
-          orderId: {DataType: "String", StringValue: String(event.order.id ?? "unknown")},
-        },
-      }),
-    );
-
-    set.status = 202;
-    logger.info("queued employee-order event", {
-      eventId: event.eventId,
-      topic: event.topic,
-      shopDomain: event.shopDomain,
-      orderId: event.order.id,
-    });
-    return {ok: true, eventId: event.eventId, topic: event.topic};
-  } catch (error) {
-    logger.error("failed to queue employee-order event", error as Error);
-    set.status = 400;
-    throw error;
-  }
 }
 
 export const app = new Elysia()
@@ -108,7 +62,6 @@ export const app = new Elysia()
   .get("/pos", ({set}) => unversionedPosResponse(set))
   .get("/pos/", ({set}) => unversionedPosResponse(set))
   .get("/pos/v1/runtime", runtimePayload)
-  .post("/pos/v1/events/employee-order", ({body, set}) => enqueueEmployeeOrderEvent(body, set))
   .use(posRoutes)
   .get("/", renderIndexResponse)
   .get("/*", serveStaticOrIndex);
@@ -157,14 +110,14 @@ async function renderIndexHtml(): Promise<string> {
 }
 
 async function ensureRuntimeSecrets(): Promise<void> {
-  const secretRoot = normalizedSecretRoot();
-  if (!secretRoot) return;
+  const secretId = runtimeSecretId();
+  if (!secretId) return;
 
   const now = Date.now();
   if (now < runtimeSecretsExpiresAt) return;
 
   if (!runtimeSecretsPromise) {
-    runtimeSecretsPromise = loadRuntimeSecrets(secretRoot)
+    runtimeSecretsPromise = loadRuntimeSecrets(secretId)
       .then(() => {
         runtimeSecretsExpiresAt = Date.now() + secretsCacheTtlMs;
       })
@@ -176,13 +129,8 @@ async function ensureRuntimeSecrets(): Promise<void> {
   await runtimeSecretsPromise;
 }
 
-async function loadRuntimeSecrets(secretRoot: string): Promise<void> {
-  const env = process.env.ENV;
-  if (!env) {
-    throw new Error("ENV is required when RETAIL_SECRET_ROOT is configured");
-  }
-
-  const runtime = await readJsonSecret(`${secretRoot}/runtime/${env}`);
+async function loadRuntimeSecrets(secretId: string): Promise<void> {
+  const runtime = await readJsonSecret(secretId);
 
   setRequiredEnv("SHOPIFY_CLIENT_ID", stringField(runtime, "shopifyClientId", "runtime"));
   setRequiredEnv("SHOPIFY_CLIENT_SECRET", stringField(runtime, "shopifyClientSecret", "runtime"));
@@ -227,8 +175,8 @@ function setOptionalEnv(name: string, value: string | undefined): void {
   if (value) process.env[name] = value;
 }
 
-function normalizedSecretRoot(): string {
-  return process.env.RETAIL_SECRET_ROOT?.replace(/\/+$/, "") ?? "";
+function runtimeSecretId(): string {
+  return process.env.RETAIL_RUNTIME_SECRET_ARN?.trim() ?? "";
 }
 
 function escapeHtmlAttribute(value: string): string {

@@ -1,6 +1,5 @@
 import {useMemo} from "preact/hooks";
 import {
-  employeeOrderEventsEndpoint,
   retailPosHost,
   type RuntimeEnvironment,
 } from "@alo-retail-pos-service/pos-domain";
@@ -22,9 +21,6 @@ export function App() {
           </s-box>
           <s-box>
             <s-text>Employee source: HRIS</s-text>
-          </s-box>
-          <s-box>
-            <s-text>Employee events: {employeeOrderEventsEndpoint()}</s-text>
           </s-box>
         </s-stack>
       </s-section>

@@ -38,7 +38,7 @@ export default async function getSignupConfigs(session) {
   };
 
   try {
-    const featureConfig = new DynamoPosAloAccessFeatureConfig(process.env.POS_FEATURE_CONFIGS_TABLE || "pos_alo_access_feature_configs");
+    const featureConfig = new DynamoPosAloAccessFeatureConfig(process.env.FEATURE_CONFIGS_TABLE_NAME);
 
     const addEditCustomerConfig = await featureConfig.getFeatureConfig(ADD_EDIT_CUSTOMER_CONFIG_ID);
 
