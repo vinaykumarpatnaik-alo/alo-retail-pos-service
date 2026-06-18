@@ -6,6 +6,7 @@ import {
   type ShopifyOrderPayload,
 } from "@alo-retail-pos-service/pos-domain";
 import {configureWorkerRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
+import {ensureRuntimeSecrets} from "@alo-retail-pos-service/runtime-secrets";
 
 const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-employee-order-events"});
 
@@ -69,6 +70,9 @@ export async function handler(event: SQSEvent, context?: Context): Promise<SQSBa
 }
 
 export async function processRecord(record: SQSRecord): Promise<void> {
+  await ensureRuntimeSecrets();
+  configureWorkerRuntimeConfig();
+
   const employeeOrderEvent = parseEmployeeOrderEvent(JSON.parse(record.body));
   await processEmployeeDiscountOrder(employeeOrderEvent);
 

@@ -30,11 +30,10 @@
       "dependencies": {
         "@alo-retail-pos-service/pos-domain": "*",
         "@alo-retail-pos-service/runtime-config": "*",
+        "@alo-retail-pos-service/runtime-secrets": "*",
         "@alo-retail-pos-service/shopify-auth": "*",
         "@aws-lambda-powertools/logger": "^2.29.0",
-        "@aws-lambda-powertools/parameters": "^2.29.0",
         "@aws-sdk/client-dynamodb": "^3.700.0",
-        "@aws-sdk/client-secrets-manager": "^3.700.0",
         "@aws-sdk/util-dynamodb": "^3.700.0",
         "@shopify/admin-graphql-api-utilities": "^2.2.0",
         "@shopify/shopify-api": "^12.3.0",
@@ -70,6 +69,7 @@
       "dependencies": {
         "@alo-retail-pos-service/pos-domain": "*",
         "@alo-retail-pos-service/runtime-config": "*",
+        "@alo-retail-pos-service/runtime-secrets": "*",
         "@aws-lambda-powertools/logger": "^2.29.0",
       },
       "devDependencies": {
@@ -88,6 +88,16 @@
     "packages/runtime-config": {
       "name": "@alo-retail-pos-service/runtime-config",
       "version": "0.1.0",
+      "devDependencies": {
+        "typescript": "^5.9.0",
+      },
+    },
+    "packages/runtime-secrets": {
+      "name": "@alo-retail-pos-service/runtime-secrets",
+      "version": "0.1.0",
+      "dependencies": {
+        "@aws-lambda-powertools/parameters": "^2.29.0",
+      },
       "devDependencies": {
         "typescript": "^5.9.0",
       },
@@ -111,6 +121,8 @@
     "@alo-retail-pos-service/pos-domain": ["@alo-retail-pos-service/pos-domain@workspace:packages/pos-domain"],
 
     "@alo-retail-pos-service/runtime-config": ["@alo-retail-pos-service/runtime-config@workspace:packages/runtime-config"],
+
+    "@alo-retail-pos-service/runtime-secrets": ["@alo-retail-pos-service/runtime-secrets@workspace:packages/runtime-secrets"],
 
     "@alo-retail-pos-service/shopify-auth": ["@alo-retail-pos-service/shopify-auth@workspace:packages/shopify-auth"],
 

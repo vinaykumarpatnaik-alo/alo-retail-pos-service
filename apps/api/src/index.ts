@@ -2,10 +2,10 @@ import {promises as fs} from "node:fs";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import {Logger} from "@aws-lambda-powertools/logger";
-import {getSecret} from "@aws-lambda-powertools/parameters/secrets";
 import {Elysia} from "elysia";
 import type {APIGatewayProxyEvent, APIGatewayProxyEventV2, APIGatewayProxyResult, Context} from "aws-lambda";
 import {configureMiddlewareRuntimeConfig} from "@alo-retail-pos-service/runtime-config";
+import {ensureRuntimeSecrets} from "@alo-retail-pos-service/runtime-secrets";
 // @ts-expect-error copied POS route adapter is JavaScript so helper logic stays out of TypeScript checking.
 import {posRoutes} from "./pos-routes.js";
 
@@ -16,9 +16,6 @@ const publicDir = path.resolve(dirname, "../public");
 const indexHtmlPath = path.resolve(publicDir, "index.html");
 const port = Number(process.env.PORT ?? "8080");
 const logger = new Logger({serviceName: process.env.POWERTOOLS_SERVICE_NAME ?? "alo-retail-pos-service-api"});
-const secretsCacheTtlMs = Number(process.env.SECRETS_CACHE_TTL_SECONDS ?? "900") * 1000;
-let runtimeSecretsExpiresAt = 0;
-let runtimeSecretsPromise: Promise<void> | undefined;
 
 function runtimePayload() {
   return {
@@ -107,76 +104,6 @@ async function renderIndexResponse(): Promise<Response> {
 async function renderIndexHtml(): Promise<string> {
   const [html, shopifyClientId] = await Promise.all([fs.readFile(indexHtmlPath, "utf8"), process.env.SHOPIFY_CLIENT_ID?.trim() ?? ""]);
   return html.replaceAll("__SHOPIFY_CLIENT_ID__", escapeHtmlAttribute(shopifyClientId));
-}
-
-async function ensureRuntimeSecrets(): Promise<void> {
-  const secretId = runtimeSecretId();
-  if (!secretId) return;
-
-  const now = Date.now();
-  if (now < runtimeSecretsExpiresAt) return;
-
-  if (!runtimeSecretsPromise) {
-    runtimeSecretsPromise = loadRuntimeSecrets(secretId)
-      .then(() => {
-        runtimeSecretsExpiresAt = Date.now() + secretsCacheTtlMs;
-      })
-      .finally(() => {
-        runtimeSecretsPromise = undefined;
-      });
-  }
-
-  await runtimeSecretsPromise;
-}
-
-async function loadRuntimeSecrets(secretId: string): Promise<void> {
-  const runtime = await readJsonSecret(secretId);
-
-  setRequiredEnv("SHOPIFY_CLIENT_ID", stringField(runtime, "shopifyClientId", "runtime"));
-  setRequiredEnv("SHOPIFY_CLIENT_SECRET", stringField(runtime, "shopifyClientSecret", "runtime"));
-  setOptionalEnv("SHOPIFY_API_KEY", optionalStringField(runtime, "shopifyApiKey"));
-  setRequiredEnv("ALO_API_KEY", stringField(runtime, "aloApiKey", "runtime"));
-  setRequiredEnv("ALO_API_SECRET_KEY", stringField(runtime, "aloApiSecretKey", "runtime"));
-  setRequiredEnv("LOYALTYLION_API_TOKEN", stringField(runtime, "loyaltylionApiToken", "runtime"));
-  setRequiredEnv("LOYALTYLION_API_SECRET", stringField(runtime, "loyaltylionApiSecret", "runtime"));
-  setRequiredEnv("STOREFULFILLMENT_API_KEY", stringField(runtime, "storeFulfillmentApiKey", "runtime"));
-  setRequiredEnv("STOREFULFILLMENT_API_SECRET_KEY", stringField(runtime, "storeFulfillmentApiSecretKey", "runtime"));
-}
-
-async function readJsonSecret(secretId: string): Promise<Record<string, unknown>> {
-  const secretValue = await getSecret(secretId);
-  if (!secretValue) throw new Error(`Secret ${secretId} is empty`);
-  const secretText = typeof secretValue === "string" ? secretValue : Buffer.from(secretValue).toString("utf8");
-  const parsed = JSON.parse(secretText) as unknown;
-  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error(`Secret ${secretId} must be a JSON object`);
-  }
-  return parsed as Record<string, unknown>;
-}
-
-function stringField(secret: Record<string, unknown>, field: string, secretName: string): string {
-  const value = secret[field];
-  if (typeof value !== "string" || !value.trim()) {
-    throw new Error(`${secretName}.${field} is required`);
-  }
-  return value;
-}
-
-function setRequiredEnv(name: string, value: string): void {
-  process.env[name] = value;
-}
-
-function optionalStringField(secret: Record<string, unknown>, field: string): string | undefined {
-  const value = secret[field];
-  return typeof value === "string" && value.trim() ? value : undefined;
-}
-
-function setOptionalEnv(name: string, value: string | undefined): void {
-  if (value) process.env[name] = value;
-}
-
-function runtimeSecretId(): string {
-  return process.env.RETAIL_RUNTIME_SECRET_ARN?.trim() ?? "";
 }
 
 function escapeHtmlAttribute(value: string): string {

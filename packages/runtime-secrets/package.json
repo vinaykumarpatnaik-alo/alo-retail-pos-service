@@ -1,0 +1,18 @@
+{
+  "name": "@alo-retail-pos-service/runtime-secrets",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/parameters": "^2.29.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0"
+  }
+}

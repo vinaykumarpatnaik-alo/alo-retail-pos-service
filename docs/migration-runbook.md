@@ -87,10 +87,10 @@ Placement rule:
 - Shopify extension deploy values belong in one AWS Secrets Manager JSON secret named `/retail/alo-retail-pos-service/shopify-extension` in each environment/account, with `clientId` and `appAutomationToken`.
 - Terraform should create/replicate both secret resources and exact-scope IAM: runtime Lambda reads only the runtime secret, and GitHub Actions reads only the Shopify extension secret.
 - Terraform should pass `RETAIL_RUNTIME_SECRET_ARN` for the runtime secret.
-- The app fetches the runtime JSON secret through Powertools and caches it in the warm Lambda container for 900 seconds by default. `SECRETS_CACHE_TTL_SECONDS` is an app/local override, not a Terraform-managed env var.
+- `packages/runtime-secrets` fetches the runtime JSON secret through Powertools and caches it in the warm Lambda container for 900 seconds by default. `SECRETS_CACHE_TTL_SECONDS` is an app/local override, not a Terraform-managed env var.
 - GitHub Actions fetches the Shopify extension JSON secret at deploy time through AWS OIDC before running `bun run deploy`.
 
-Application helper wiring does not change. The runtime config loader reads the runtime JSON secret fields and hydrates the env names the copied POS helpers expect.
+Application helper wiring does not change. `packages/runtime-secrets` reads the runtime JSON secret fields and hydrates the secret env names the copied POS helpers and worker expect. `packages/runtime-config` separately hydrates non-secret URLs, timeout values, and fallback config.
 
 Required environment wiring per env:
 

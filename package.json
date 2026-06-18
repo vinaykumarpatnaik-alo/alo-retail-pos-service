@@ -17,7 +17,7 @@
     "info": "shopify app info",
     "generate": "shopify app generate",
     "deploy": "bun run shopify:config && shopify app deploy --config generated --allow-updates",
-    "typecheck": "bun run --cwd apps/frontend typecheck && bun run --cwd apps/api typecheck && bun run --cwd apps/worker typecheck && bun run --cwd packages/pos-domain typecheck && bun run --cwd packages/runtime-config typecheck && bun run --cwd packages/shopify-auth typecheck",
+    "typecheck": "bun run --cwd apps/frontend typecheck && bun run --cwd apps/api typecheck && bun run --cwd apps/worker typecheck && bun run --cwd packages/pos-domain typecheck && bun run --cwd packages/runtime-config typecheck && bun run --cwd packages/runtime-secrets typecheck && bun run --cwd packages/shopify-auth typecheck",
     "test": "bun test",
     "shopify": "shopify",
     "shopify:config": "bun scripts/render-shopify-config.mjs",

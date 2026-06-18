@@ -6,6 +6,8 @@ COPY apps/frontend/package.json apps/frontend/package.json
 COPY apps/api/package.json apps/api/package.json
 COPY apps/worker/package.json apps/worker/package.json
 COPY packages/pos-domain/package.json packages/pos-domain/package.json
+COPY packages/runtime-config/package.json packages/runtime-config/package.json
+COPY packages/runtime-secrets/package.json packages/runtime-secrets/package.json
 COPY packages/shopify-auth/package.json packages/shopify-auth/package.json
 RUN bun install --frozen-lockfile --ignore-scripts
 

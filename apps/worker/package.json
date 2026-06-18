@@ -10,6 +10,7 @@
   "dependencies": {
     "@alo-retail-pos-service/pos-domain": "*",
     "@alo-retail-pos-service/runtime-config": "*",
+    "@alo-retail-pos-service/runtime-secrets": "*",
     "@aws-lambda-powertools/logger": "^2.29.0"
   },
   "devDependencies": {
